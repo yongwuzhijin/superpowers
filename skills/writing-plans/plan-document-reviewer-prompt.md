@@ -1,10 +1,10 @@
-# Plan Document Reviewer Prompt Template
+# 计划文档评审者 Prompt 模板
 
-Use this template when dispatching a plan document reviewer subagent.
+派发计划文档评审子 Agent 时,使用这个模板。
 
-**Purpose:** Verify the plan is complete, matches the spec, and has proper task decomposition.
+**目的:** 核实计划是否完整、是否与 spec 一致、任务分解是否恰当。
 
-**Dispatch after:** The complete plan is written.
+**在何时派发:** 完整的计划写好之后。
 
 ```
 Subagent (general-purpose):
@@ -46,4 +46,4 @@ Subagent (general-purpose):
     - [suggestions for improvement]
 ```
 
-**Reviewer returns:** Status, Issues (if any), Recommendations
+**评审者返回:** 状态(Status)、问题(如有)、建议(Recommendations)

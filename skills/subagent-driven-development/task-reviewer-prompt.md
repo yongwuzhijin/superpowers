@@ -1,153 +1,105 @@
-# Task Reviewer Prompt Template
+# 任务评审者提示词模板
 
-Use this template when dispatching a task reviewer subagent. The reviewer
-reads the task's diff once and returns two verdicts: spec compliance and
-code quality.
+派发任务评审者子 Agent 时使用本模板。评审者把该任务的 diff 读一遍,返回两个裁决:是否符合 spec,以及代码质量。
 
-**Purpose:** Verify one task's implementation matches its requirements (nothing
-more, nothing less) and is well-built (clean, tested, maintainable)
+**目的:**验证某一个任务的实现与其需求相符(不多也不少),并且造得好(干净、有测试、可维护)
 
 ```
 Subagent (general-purpose):
   description: "Review Task N (spec + quality)"
-  model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
-         model silently inherits the session's most expensive one]
+  model: [MODEL — 必填:按 SKILL.md 的模型选择来选;省略 model
+         会悄无声息地继承会话里最贵的那个]
   prompt: |
-    You are reviewing one task's implementation: first whether it matches its
-    requirements, then whether it is well-built. This is a task-scoped gate,
-    not a merge review — a broad whole-branch review happens separately after
-    all tasks are complete.
+    你正在评审某一个任务的实现:先看它是否与需求相符,再看它是否造得好。这是一个任务范围内的关卡,
+    不是合并评审——一次面向整条分支的广度评审会在所有任务完成后单独进行。
 
-    ## What Was Requested
+    ## 被要求做什么
 
-    Read the task brief: [BRIEF_FILE]
+    读任务简报:[BRIEF_FILE]
 
-    Global constraints from the spec/design that bind this task:
+    来自 spec/设计、约束此任务的全局约束:
     [GLOBAL_CONSTRAINTS]
 
-    ## What the Implementer Claims They Built
+    ## 实现者声称他们造了什么
 
-    Read the implementer's report: [REPORT_FILE]
+    读实现者的报告:[REPORT_FILE]
 
-    ## Diff Under Review
+    ## 被评审的 Diff
 
     **Base:** [BASE_SHA]
     **Head:** [HEAD_SHA]
     **Diff file:** [DIFF_FILE]
 
-    Read the diff file once — it contains the commit list, a stat summary,
-    and the full diff with surrounding context, and it is your view of the
-    change. The diff's context lines ARE the changed files: do not Read a
-    changed file separately unless a hunk you must judge is cut off
-    mid-function — and say so in your report. Do not re-run git commands.
-    If the diff file is missing, fetch the diff yourself:
-    `git diff --stat [BASE_SHA]..[HEAD_SHA]` and `git diff [BASE_SHA]..[HEAD_SHA]`.
-    Do not crawl the broader codebase. Inspect code outside the diff only
-    to evaluate a concrete risk you can name — one focused check per named
-    risk, and name both the risk and what you checked in your report.
-    Cross-cutting changes are legitimate named risks: if the diff changes
-    lock ordering, a function or API contract, or shared mutable state,
-    checking the call sites is the right method.
+    把 diff 文件读一遍——它包含提交列表、一份 stat 摘要,以及带周边上下文的完整 diff,它就是你看这次改动的视角。
+    diff 的上下文行**就是**那些被改动的文件:不要单独去 Read 一个被改动的文件,除非你必须判断的某个 hunk 在函数中间被截断了——那就在报告里说明。不要重跑 git 命令。
+    如果 diff 文件缺失,自己去取 diff:
+    `git diff --stat [BASE_SHA]..[HEAD_SHA]` 和 `git diff [BASE_SHA]..[HEAD_SHA]`。
+    不要去爬更大范围的代码库。只有为了评估一个你能明确说出的具体风险时,才去检查 diff 之外的代码——每个点名的风险做一次聚焦检查,并在报告里同时点名这个风险和你检查了什么。
+    跨切面的改动是合法的、有名有姓的风险:如果 diff 改动了锁顺序、一个函数或 API 契约、或共享的可变状态,检查调用点就是正确的方法。
 
-    Your review is read-only on this checkout. Do not mutate the working
-    tree, the index, HEAD, or branch state in any way.
+    你的评审对这个 checkout 是只读的。不要以任何方式改动工作树、索引、HEAD 或分支状态。
 
-    ## Do Not Trust the Report
+    ## 不要相信报告
 
-    Treat the implementer's report as unverified claims about the code. It
-    may be incomplete, inaccurate, or optimistic. Verify the claims against
-    the diff. Design rationales in the report are claims too: "left it per
-    YAGNI," "kept it simple deliberately," or any other justification is the
-    implementer grading their own work. Judge the code on its merits — a
-    stated rationale never downgrades a finding's severity.
+    把实现者的报告当作关于代码的、未经证实的声称。它可能不完整、不准确,或过于乐观。拿这些声称去和 diff 对照验证。
+    报告里的设计理由也是声称:"按 YAGNI 留着没做"、"故意保持简单"、或任何其他辩解,都是实现者在给自己的作业打分。就代码本身论优劣——一个说出来的理由绝不会降低一条发现的严重度。
 
-    ## Tests
+    ## 测试
 
-    The implementer already ran the tests and reported results with TDD
-    evidence for exactly this code. Do not re-run the suite to confirm their
-    report. Run a test only when reading the code raises a specific doubt
-    that no existing run answers — and then a focused test, never a
-    package-wide suite, race detector run, or repeated/high-count loop. If
-    heavy validation seems warranted, recommend it in your report instead of
-    running it. If you cannot run commands in this environment, name the
-    test you would run.
+    实现者已经跑过测试,并针对的正是这段代码报告了带 TDD 证据的结果。不要为了确认他们的报告去重跑整个套件。
+    只有当读代码引出一个现有运行都答不上的具体疑问时,才去跑测试——而且是聚焦的测试,绝不是覆盖整个包的套件、竞态检测器运行、或反复/高次数的循环。
+    如果看起来有必要做重量级验证,在报告里推荐它,而不是去跑它。如果你在这个环境里无法运行命令,就点名你会跑的那个测试。
 
-    Warnings or other noise in the implementer's reported test output are
-    findings — test output should be pristine.
+    实现者报告的测试输出里有警告或其他噪音,都是发现——测试输出应当干干净净。
 
-    ## Part 1: Spec Compliance
+    ## 第一部分:是否符合 spec
 
-    Compare the diff against What Was Requested:
+    拿 diff 去和"被要求做什么"对照:
 
-    - **Missing:** requirements they skipped, missed, or claimed without
-      implementing
-    - **Extra:** features that weren't requested, over-engineering, unneeded
-      "nice to haves"
-    - **Misunderstood:** right feature built the wrong way, wrong problem
-      solved
+    - **Missing(缺失):**他们跳过、漏掉、或声称却没实现的需求
+    - **Extra(多余):**没被要求的特性、过度工程、不需要的"锦上添花"
+    - **Misunderstood(理解错误):**对的特性用错的方式造了、解决了错的问题
 
-    If a requirement cannot be verified from this diff alone (it lives in
-    unchanged code or spans tasks), report it as a ⚠️ item instead of
-    broadening your search.
+    如果某个需求无法仅从这份 diff 验证(它落在未改动代码里、或跨多个任务),把它报告为一条 ⚠️ 条目,而不是扩大你的搜索范围。
 
-    ## Part 2: Code Quality
+    ## 第二部分:代码质量
 
-    **Code quality:**
-    - Clean separation of concerns?
-    - Proper error handling?
-    - DRY without premature abstraction?
-    - Edge cases handled?
+    **代码质量:**
+    - 关注点分离干净吗?
+    - 错误处理得当吗?
+    - DRY 而没有过早抽象?
+    - 边界情况处理了吗?
 
-    **Tests:**
-    - Do the new and changed tests verify real behavior, not mocks?
-    - Are the task's edge cases covered?
+    **测试:**
+    - 新增和改动的测试是否验证真实行为,而不是 mock?
+    - 该任务的边界情况覆盖到了吗?
 
-    **Structure:**
-    - Does each file have one clear responsibility with a well-defined interface?
-    - Are units decomposed so they can be understood and tested independently?
-    - Is the implementation following the file structure from the plan?
-    - Did this change create new files that are already large, or
-      significantly grow existing files? (Don't flag pre-existing file
-      sizes — focus on what this change contributed.)
+    **结构:**
+    - 每个文件是否有一个清晰的职责和一个定义良好的接口?
+    - 各个单元是否被拆解得可以独立理解和测试?
+    - 实现是否遵循计划里的文件结构?
+    - 这次改动是否创建了本就很大的新文件,或显著增大了已有文件?(不要标记本来就存在的文件大小——聚焦于这次改动贡献了什么。)
 
-    Your report should point at evidence: file:line references for every
-    finding and for any check you would otherwise answer with a bare
-    "yes." A tight report that cites lines gives the controller everything
-    it needs.
+    你的报告应当指向证据:每一条发现、以及任何你本来会用一个光秃秃"是"来回答的检查,都给出 file:line 引用。一份引用了行号的紧凑报告,能给控制者它所需的一切。
 
-    Your final message is the report itself: begin directly with the
-    spec-compliance verdict. Every line is a verdict, a finding with
-    file:line, or a check you ran — no preamble, no process narration,
-    no closing summary.
+    你的最终消息就是报告本身:直接从是否符合 spec 的裁决开始。每一行要么是一个裁决、要么是一条带 file:line 的发现、要么是你跑过的一次检查——没有开场白、没有流程叙述、没有收尾总结。
 
-    ## Calibration
+    ## 校准(Calibration)
 
-    Categorize issues by actual severity. Not everything is Critical.
-    Important means this task cannot be trusted until it is fixed: incorrect
-    or fragile behavior, a missed requirement, or maintainability damage you
-    would block a merge over — verbatim duplication of a logic block,
-    swallowed errors, tests that assert nothing. "Coverage could be broader"
-    and polish suggestions are Minor.
-    If the plan or brief explicitly mandates something this rubric calls a
-    defect (a test that asserts nothing, verbatim duplication of a logic
-    block), that IS a finding — report it as Important, labeled
-    plan-mandated. The plan's authorship does not grade its own work; the
-    human decides.
-    Acknowledge what was done well before listing issues — accurate praise
-    helps the implementer trust the rest of the feedback.
+    按实际严重度给问题归类。不是什么都算 Critical。
+    Important 意味着这个任务在修好之前不能被信任:不正确或脆弱的行为、一个漏掉的需求、或你会为之阻止合并的可维护性损害——逐字重复的逻辑块、被吞掉的错误、什么都不断言的测试。"覆盖率可以更广"和打磨类建议是 Minor。
+    如果计划或简报明确要求了某个本评审标准称之为缺陷的东西(一个什么都不断言的测试、逐字重复的逻辑块),那**就是**一条发现——把它报告为 Important,标为 plan-mandated(计划要求)。计划的作者身份并不能给它自己的作业打分;由人类来决定。
+    在列出问题之前,先承认哪些地方做得好——准确的表扬能帮实现者信任反馈的其余部分。
 
-    ## Output Format
+    ## 输出格式
 
     ### Spec Compliance
 
-    - ✅ Spec compliant | ❌ Issues found: [what's missing/extra/misunderstood,
-      with file:line references]
-    - ⚠️ Cannot verify from diff: [requirements you could not verify from the
-      diff alone, and what the controller should check — report alongside the
-      ✅/❌ verdict for everything you could verify]
+    - ✅ Spec compliant | ❌ Issues found:[缺什么/多什么/理解错什么,带 file:line 引用]
+    - ⚠️ Cannot verify from diff:[你无法仅凭 diff 验证的需求,以及控制者应当检查什么——和你能验证的一切的 ✅/❌ 裁决并列报告]
 
     ### Strengths
-    [What's well done? Be specific.]
+    [哪里做得好?要具体。]
 
     ### Issues
 
@@ -155,34 +107,24 @@ Subagent (general-purpose):
     #### Important (Should Fix)
     #### Minor (Nice to Have)
 
-    For each issue: file:line, what's wrong, why it matters, how to fix
-    (if not obvious).
+    每条问题:file:line、哪里不对、为什么重要、怎么修(如果不显而易见)。
 
     ### Assessment
 
     **Task quality:** [Approved | Needs fixes]
 
-    **Reasoning:** [1-2 sentence technical assessment]
+    **Reasoning:** [1-2 句技术评估]
 ```
 
-**Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
-- `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
-  prints the path; same file the implementer worked from)
-- `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from
-  the plan's Global Constraints section or the spec: exact values, formats,
-  and stated relationships between components (not process rules — those
-  are already in this template)
-- `[REPORT_FILE]` — REQUIRED: the file the implementer wrote its detailed
-  report to
-- `[BASE_SHA]` — commit before this task
-- `[HEAD_SHA]` — current commit
-- `[DIFF_FILE]` — REQUIRED: the path the controller wrote the review
-  package to (`scripts/review-package BASE HEAD` prints the unique path it
-  wrote; the package never enters the controller's context)
+**占位符:**
+- `[MODEL]` — 必填:评审者模型,按 SKILL.md 的模型选择
+- `[BRIEF_FILE]` — 必填:任务简报文件(`scripts/task-brief PLAN N` 会打印路径;和实现者所依据的是同一个文件)
+- `[GLOBAL_CONSTRAINTS]` — 从计划的 Global Constraints 章节或 spec 里逐字照抄的、有约束力的要求:精确取值、格式,以及组件之间被明确规定的关系(不是流程规则——那些已经在本模板里了)
+- `[REPORT_FILE]` — 必填:实现者写它详细报告的那个文件
+- `[BASE_SHA]` — 这个任务之前的提交
+- `[HEAD_SHA]` — 当前提交
+- `[DIFF_FILE]` — 必填:控制者写出评审包的那个路径(`scripts/review-package BASE HEAD` 会打印它写出的那个唯一路径;这个评审包永远不会进入控制者的上下文)
 
-**Reviewer returns:** Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues
-(Critical/Important/Minor), Task quality verdict
+**评审者返回:**Spec Compliance 裁决(✅/❌/⚠️)、Strengths、Issues(Critical/Important/Minor)、Task quality 裁决
 
-A fix dispatch can address spec gaps and quality findings together;
-re-review after fixes covers both verdicts.
+一次修复派发可以把 spec 缺口和质量发现一起处理;修完之后的重新评审会覆盖两个裁决。

@@ -1,37 +1,37 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "在任何创造性工作之前你都必须先用它——创建功能、构建组件、新增能力或修改行为都算。它会在动手实现前先摸清用户意图、需求和设计。"
 ---
 
-# Brainstorming Ideas Into Designs
+# 把想法头脑风暴成设计方案
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+通过自然的协作式对话，帮用户把想法打磨成完整成型的设计和 spec。
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+先摸清当前项目的上下文，然后一次问一个问题来逐步细化这个想法。等你搞清楚要构建的是什么了，把设计方案摆出来，让用户拍板。
 
 <HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+在你拿出设计方案、并且用户点头之前,绝对不要调用任何实现类技能、不要写任何代码、不要搭建任何项目脚手架、也不要采取任何实现动作。这条规则适用于每一个项目,不管它看起来多简单。
 </HARD-GATE>
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+## 反模式:"这也太简单了,根本不需要设计"
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+每个项目都要走这个流程。待办清单、单函数小工具、改个配置——统统都要。恰恰是"简单"项目里那些没被审视过的假设,最容易造成白干。设计可以写得很短(真正简单的项目几句话就行),但你必须把它摆出来并拿到批准。
 
-## Checklist
+## 检查清单
 
-You MUST create a task for each of these items and complete them in order:
+下面每一项你都必须建一个任务,并按顺序完成:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+1. **摸清项目上下文** — 查看文件、文档、最近的提交
+2. **在恰当时机提供视觉辅助工具** — 不要一上来就提。等到某个问题确实"给你看一眼"比"跟你描述"更清楚时,再提出来(单独发一条消息);用户同意后,它的浏览器标签页会为你打开。如果自始至终都没冒出需要视觉呈现的问题,那就永远别提。见下文的"视觉辅助工具"一节。
+3. **提出澄清性问题** — 一次一个,搞清楚目的/约束/成功标准
+4. **提出 2-3 种方案** — 附上取舍分析和你的推荐
+5. **呈现设计** — 分成若干小节,每节篇幅按其复杂度伸缩,每呈现一节就征求一次用户批准
+6. **写设计文档** — 保存到 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` 并提交
+7. **spec 自查** — 快速就地检查有没有占位符、自相矛盾、含糊之处、范围问题(见下文)
+8. **用户审阅写好的 spec** — 在继续之前,请用户审阅这份 spec 文件
+9. **过渡到实现** — 调用 writing-plans 技能来制定实现计划
 
-## Process Flow
+## 流程图
 
 ```dot
 digraph brainstorming {
@@ -58,102 +58,103 @@ digraph brainstorming {
 }
 ```
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+**终点状态是调用 writing-plans。** 不要调用 frontend-design、mcp-builder 或任何其他实现类技能。头脑风暴之后你唯一能调用的技能就是 writing-plans。
 
-## The Process
+## 具体流程
 
-**Understanding the idea:**
+**理解这个想法:**
 
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+- 先看看项目的当前状态(文件、文档、最近的提交)
+- 在问细节问题之前,先评估范围:如果需求描述的是多个互相独立的子系统(比如"做一个带聊天、文件存储、计费和分析的平台"),立刻把这一点点出来。别把问题浪费在细抠一个本该先拆解的项目上。
+- 如果项目太大、一份 spec 装不下,帮用户拆成若干子项目:哪些是独立的部分,它们之间什么关系,该按什么顺序构建?然后走正常的设计流程,先头脑风暴第一个子项目。每个子项目都有自己独立的 spec → plan → 实现 循环。
+- 对于范围合适的项目,一次问一个问题来细化想法
+- 尽量用选择题,不过开放式问题也没关系
+- 每条消息只问一个问题——如果一个话题需要更多探讨,就把它拆成多个问题
+- 聚焦于理解:目的、约束、成功标准
 
-**Exploring approaches:**
+**探索方案:**
 
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+- 提出 2-3 种不同的方案,附带取舍
+- 用对话的方式把选项摆出来,给出你的推荐和理由
+- 先讲你推荐的那个,并解释为什么
 
-**Presenting the design:**
+**呈现设计:**
 
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+- 一旦你觉得自己搞懂了要构建什么,就把设计呈现出来
+- 每一节的篇幅按复杂度伸缩:直白的几句话搞定,微妙的可以写到 200-300 字
+- 每讲完一节,问一下到目前为止看着对不对
+- 覆盖:架构、组件、数据流、错误处理、测试
+- 如果有什么讲不通,随时准备回头澄清
 
-**Design for isolation and clarity:**
+**为隔离性和清晰度而设计:**
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+- 把系统拆成更小的单元,每个单元只有一个明确的职责,通过定义良好的接口通信,并且能够被独立地理解和测试
+- 对每个单元,你都应该能回答:它做什么、怎么用、它依赖什么?
+- 别人不读内部实现,能明白这个单元干嘛的吗?你能改内部实现而不搞坏调用方吗?如果不能,那边界就还需要打磨。
+- 更小、边界更清晰的单元,你用起来也更顺手——你对能一次性装进上下文的代码推理得更好,文件聚焦时你的改动也更靠谱。当一个文件变得很大,那往往是个信号:它干的事太多了。
 
-**Working in existing codebases:**
+**在既有代码库里工作:**
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+- 在提出改动前,先探索现有结构。沿用既有模式。
+- 如果现有代码存在影响本次工作的问题(比如某个文件变得太大、边界不清、职责纠缠在一起),就把有针对性的改进作为设计的一部分——就像一个好开发者会顺手改进自己正在动的代码那样。
+- 别提无关的重构。守住当下目标,别跑题。
 
-## After the Design
+## 设计完成之后
 
-**Documentation:**
+**文档:**
 
-- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- 把验证过的设计(spec)写到 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+  - (如果用户对 spec 存放位置有偏好,以用户的偏好为准)
+- 如果有 elements-of-style:writing-clearly-and-concisely 技能,就用上
+- 把设计文档提交到 git
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+**spec 自查:**
+写完 spec 文档后,用全新的眼光重新看一遍:
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+1. **占位符扫描:** 有没有 "TBD"、"TODO"、没写完的小节,或者含糊的需求?修掉。
+2. **内部一致性:** 有没有哪些小节互相矛盾?架构和功能描述对得上吗?
+3. **范围检查:** 它是否聚焦到足以对应单份实现计划,还是需要拆解?
+4. **歧义检查:** 有没有哪条需求能被解读成两种意思?如果有,选定一种并写明白。
 
-Fix any issues inline. No need to re-review — just fix and move on.
+有问题就地修掉。不用再审一遍——修完接着往下走就行。
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
+**用户审阅关卡:**
+spec 审查循环通过后,在继续之前请用户审阅写好的 spec:
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+> "spec 已写好并提交到 `<path>`。请你审阅一下,在我们开始写实现计划之前,告诉我有没有想改的地方。"
 
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+等用户回复。如果他们要求改动,改完再跑一遍 spec 审查循环。只有用户点头了才继续。
 
-**Implementation:**
+**实现:**
 
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
+- 调用 writing-plans 技能来制定详细的实现计划
+- 不要调用任何其他技能。writing-plans 就是下一步。
 
-## Key Principles
+## 关键原则
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **一次一个问题** - 别用一堆问题把人淹了
+- **优先选择题** - 能选就选,比开放式问题好答
+- **无情地践行 YAGNI** - 把所有设计里不必要的功能都砍掉
+- **探索备选方案** - 定案前永远先提 2-3 种方案
+- **增量验证** - 呈现设计、拿到批准,再往下走
+- **保持灵活** - 有什么讲不通就回头澄清
 
-## Visual Companion
+## 视觉辅助工具
 
-A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+一个基于浏览器的辅助工具,用于在头脑风暴时展示原型图、示意图和视觉选项。它是一个工具,不是一种模式。接受这个工具意味着:遇到适合视觉呈现的问题时它随时可用;但绝不意味着每个问题都要走浏览器。
 
-**Offering the companion (just-in-time):** Do NOT offer it upfront. Wait until a question would genuinely be clearer shown than told — a real mockup / layout / diagram question, not merely a UI *topic*. The first time that happens, offer it then, as its own message:
-> "This next part might be easier if I show you — I can put together mockups, diagrams, and comparisons in a browser tab as we go. It's still new and can be token-intensive. Want me to? I'll open it for you."
+**提供这个工具(恰当时机):** 不要一上来就提。等到某个问题确实"给你看一眼"比"跟你说"更清楚时——一个真正需要原型图 / 布局 / 示意图的问题,而不仅仅是个 UI *话题*——第一次遇到这种情况,就在那时提出来,单独发一条消息:
 
-**This offer MUST be its own message.** Only the offer — no clarifying question, summary, or other content. Wait for the user's response. If they accept, start the server with `--open` so their browser opens to the first screen automatically. If they decline, continue text-only and don't offer again unless they raise it.
+> "接下来这部分我给你看一眼可能更好懂——我可以边聊边在浏览器标签页里做原型图、示意图和对比。这功能还比较新,而且比较费 token。要不要试试?我来帮你打开。"
 
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
+**这条提议必须单独成一条消息。** 只放提议——不夹带澄清问题、总结或其他内容。等用户回复。如果他们同意,用 `--open` 启动服务,这样他们的浏览器会自动打开到第一屏。如果他们拒绝,就继续纯文本模式,除非他们自己再提起,否则别再提。
 
-- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
-- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
+**逐题决策:** 即便用户已经同意,也要针对每一个问题分别决定:用浏览器还是用终端。判断标准:**用户是"看到它"比"读到它"更容易理解吗?**
 
-A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
+- **用浏览器**呈现本身就是视觉性的内容——原型图、线框图、布局对比、架构示意图、并排的视觉设计
+- **用终端**呈现文字性内容——需求类问题、概念性选择、取舍清单、A/B/C/D 文字选项、范围决策
 
-If they agree to the companion, read the detailed guide before proceeding:
+一个关于 UI 话题的问题,并不自动就是视觉问题。"在这个语境里 personality 是什么意思?"是概念性问题——用终端。"哪种向导布局更好?"是视觉问题——用浏览器。
+
+如果他们同意用这个工具,在继续之前先读一遍详细指南:
 `skills/brainstorming/visual-companion.md`
