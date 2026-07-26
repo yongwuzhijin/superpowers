@@ -1,11 +1,8 @@
-# Scoped Re-Review Prompt Template
+# 范围受限复审提示词模板
 
-Use this template when dispatching a re-review after a fix round. The
-re-reviewer verifies the findings were addressed and checks the fix diff for
-new breakage. It is not a fresh review — the full review already happened.
+在一个修复轮次之后派发复审时使用本模板。复审者核实那些发现是否被处理,并检查修复 diff 有没有新的破坏。它不是一次全新的评审——完整评审已经做过了。
 
-**Purpose:** Verify each finding from the previous review was addressed, and
-that the fix itself broke nothing.
+**目的:** 核实上一次评审的每一条发现是否被处理,以及修复本身有没有弄坏什么。
 
 ```
 Subagent (general-purpose):
@@ -13,94 +10,67 @@ Subagent (general-purpose):
   model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
          model silently inherits the session's most expensive one]
   prompt: |
-    You are re-reviewing one task's fix round. A previous review produced
-    findings; an implementer has attempted to fix them. Your job is to
-    verdict each finding and inspect the fix diff — nothing else.
+    你正在复审一个任务的一个修复轮次。此前一次评审产出了若干发现;一个实现者已尝试修复它们。你的活儿是:对每一条发现下裁决,并检视修复 diff——别的都不干。
 
-    ## The Task
+    ## 任务
 
-    Read the task brief: [BRIEF_FILE]
+    读任务简报:[BRIEF_FILE]
 
-    ## The Findings Under Verification
+    ## 待核实的发现
 
     [FINDINGS]
 
-    ## The Fix
+    ## 修复
 
-    Read the implementer's report (fix reports are appended at the end):
+    读实现者的报告(修复报告追加在末尾):
     [REPORT_FILE]
 
-    **Fix base:** [FIX_BASE_SHA] (the head the previous review saw)
+    **Fix base:** [FIX_BASE_SHA] (上一次评审看到的那个 head)
     **Head:** [HEAD_SHA]
     **Diff file:** [DIFF_FILE]
 
-    Read the diff file once — it contains the fix commits, a stat summary,
-    and the fix diff with surrounding context. Do not re-run git commands.
-    If the diff file is missing, fetch the diff yourself:
-    `git diff --stat [FIX_BASE_SHA]..[HEAD_SHA]` and
-    `git diff [FIX_BASE_SHA]..[HEAD_SHA]`.
+    把 diff 文件读一次——它包含修复提交、一份 stat 摘要,以及带周边上下文的修复 diff。不要重跑 git 命令。如果 diff 文件缺失,自己去取 diff:`git diff --stat [FIX_BASE_SHA]..[HEAD_SHA]` 和 `git diff [FIX_BASE_SHA]..[HEAD_SHA]`。
 
-    Your review is read-only on this checkout. Do not mutate the working
-    tree, the index, HEAD, or branch state in any way.
+    你的评审在这个 checkout 上是只读的。不要以任何方式改动工作树、索引(index)、HEAD 或分支状态。
 
-    ## Scope
+    ## 范围(Scope)
 
-    Your scope is the findings list and the fix diff. Verdict every finding.
-    Inspect the fix diff for new problems the fix itself introduced. Do NOT
-    re-review code the fix did not touch: if you notice an issue entirely
-    outside the fix diff, report it under Out-of-Scope Observations — it
-    does not block this task and does not extend the loop. A broad
-    whole-branch review happens after all tasks are complete.
+    你的范围是发现清单和修复 diff。对每一条发现下裁决。检视修复 diff,看修复本身引入了什么新问题。**不要**去复审修复没有触及的代码:如果你注意到一个完全在修复 diff 之外的问题,把它报在 Out-of-Scope Observations 下面——它不阻塞这个任务,也不延长循环。一次针对整条分支的全面评审会在所有任务完成后进行。
 
-    ## Tests
+    ## 测试
 
-    The implementer re-ran the tests covering the amended code and appended
-    the results to the report file. Treat the report as unverified claims:
-    confirm the fix report names the covering tests and shows their output,
-    and verify the claims against the diff. Do not re-run the suite to
-    confirm their report. Run a test only when reading the code raises a
-    specific doubt that no existing run answers — and then a focused test,
-    never a package-wide suite.
+    实现者重跑了覆盖被改代码的测试,并把结果追加到了报告文件里。把报告当作未经验证的说辞:确认修复报告点名了覆盖用的测试并展示了它们的输出,并拿这些说辞去对照 diff 验证。不要为了确认他们的报告而重跑套件。只有当阅读代码引出一个现有的任何一次运行都回答不了的具体疑问时,才去跑测试——而且是聚焦测试,绝不是全包级套件。
 
-    ## Output Format
+    ## 输出格式
 
-    Your final message is the report itself: begin directly with the first
-    finding's verdict. Every line is a verdict, a finding with file:line,
-    or a check you ran — no preamble, no process narration.
+    你的最终消息就是报告本身:直接从第一条发现的裁决开始。每一行都是一个裁决、一条带 file:line 的发现,或一个你跑过的检查——没有开场白、没有流程旁白。
 
     ### Finding Verdicts
 
-    For each finding in The Findings Under Verification, in order:
-    - **[finding one-liner]** — ADDRESSED | NOT ADDRESSED, with file:line
-      evidence. "Attempted" is not addressed: the specific defect must no
-      longer exist.
+    对"待核实的发现"里的每一条,按顺序:
+    - **[finding one-liner]** — ADDRESSED | NOT ADDRESSED,附 file:line 证据。"尝试过了"不算处理:那个具体的缺陷必须不再存在。
 
     ### New Breakage in the Fix Diff
 
-    Anything the fix itself broke or introduced, with severity
-    (Critical/Important/Minor) and file:line. "None" if clean.
+    修复本身弄坏或引入的任何东西,附严重级别(Critical/Important/Minor)和 file:line。干净的话写 "None"。
 
     ### Out-of-Scope Observations
 
-    Issues you noticed entirely outside the fix diff. Non-blocking; the
-    controller ledgers these for the final review. "None" if none.
+    你注意到的、完全在修复 diff 之外的问题。不阻塞;控制器会把这些记进账本供最终评审用。没有的话写 "None"。
 
     ### Verdict
 
     **Fix round:** [All findings addressed, no new Critical/Important
-    breakage | Findings remain open] — list the open ones.
+    breakage | Findings remain open] — 列出仍开放的那些。
 ```
 
-**Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection; scoped
-  re-reviews of small fix diffs take a cheap-to-mid tier
-- `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)
-- `[FINDINGS]` — the Critical/Important findings and spec gaps from the
-  previous review, copied verbatim, one per bullet
-- `[REPORT_FILE]` — the implementer's report file (fix reports appended)
-- `[FIX_BASE_SHA]` — the head the previous review saw
-- `[HEAD_SHA]` — current commit
-- `[DIFF_FILE]` — the path `scripts/review-package PLAN_FILE FIX_BASE HEAD` printed
+**占位符:**
+- `[MODEL]` — REQUIRED:按 SKILL.md 模型选择规则挑选评审者模型;对小修复 diff 的范围受限复审用便宜到中档的模型即可
+- `[BRIEF_FILE]` — 任务简报文件(与实现者所用的是同一个文件)
+- `[FINDINGS]` — 上一次评审里的 Critical/Important 发现和 spec 缺口,逐字抄来,每条一个 bullet
+- `[REPORT_FILE]` — 实现者的报告文件(修复报告已追加其中)
+- `[FIX_BASE_SHA]` — 上一次评审看到的那个 head
+- `[HEAD_SHA]` — 当前提交
+- `[DIFF_FILE]` — `scripts/review-package PLAN_FILE FIX_BASE HEAD` 打印出的那个路径
 
-**Re-reviewer returns:** per-finding verdicts (ADDRESSED / NOT ADDRESSED),
-new breakage in the fix diff, out-of-scope observations, and a round verdict.
+**复审者返回:** 逐条发现的裁决(ADDRESSED / NOT ADDRESSED)、修复 diff 里的新破坏、范围之外的观察,以及一个轮次裁决。

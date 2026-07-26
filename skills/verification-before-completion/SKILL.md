@@ -1,25 +1,25 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+description: 当你即将声称工作已完成、已修复或已通过时,在提交或创建 PR 之前使用——要求先运行验证命令并确认输出,再作出任何成功声明;永远是先有证据再下断言
 ---
 
 # Verification Before Completion
 
-## Overview
+## 概述
 
-**Core principle:** Evidence before claims, always.
+**核心原则:** 永远先有证据,再下声明。
 
-**Violating the letter of this rule is violating the spirit of this rule.**
+**违反本规则的字面表述,就是违反本规则的精神。**
 
-## The Iron Law
+## 铁律
 
 ```
 NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
-If you haven't run the verification command in this message, you cannot claim it passes.
+如果你没有在这条消息里跑过验证命令,你就不能声称它通过了。
 
-## The Gate Function
+## 关卡函数
 
 ```
 BEFORE claiming any status or expressing satisfaction:
@@ -35,86 +35,86 @@ BEFORE claiming any status or expressing satisfaction:
 Skip any step = lying, not verifying
 ```
 
-## Common Failures
+## 常见的翻车
 
-| Claim | Requires | Not Sufficient |
+| 声明 | 需要什么 | 不足以支撑 |
 |-------|----------|----------------|
-| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
-| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
-| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
-| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
-| Regression test works | Red-green cycle verified | Test passes once |
-| Agent completed | VCS diff shows changes | Agent reports "success" |
-| Requirements met | Line-by-line checklist | Tests passing |
+| 测试通过 | 测试命令输出:0 个失败 | 上一次的运行、"应该会过吧" |
+| Linter 干净 | Linter 输出:0 个错误 | 只查了一部分、靠推断 |
+| 构建成功 | 构建命令:退出码 0 | Linter 过了、日志看着不错 |
+| Bug 已修 | 复现原症状的测试:通过 | 改了代码、假定修好了 |
+| 回归测试有效 | 验证过红-绿循环 | 测试过了一次 |
+| Agent 完成了 | VCS diff 显示有改动 | Agent 报告"success" |
+| 需求已满足 | 逐条对照的清单 | 测试通过 |
 
-## Red Flags - STOP
+## 危险信号——停下
 
-- Using "should", "probably", "seems to"
-- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
-- About to commit/push/PR without verification
-- Trusting agent success reports
-- Relying on partial verification
-- Thinking "just this once"
-- Tired and wanting work over
-- **ANY wording implying success without having run verification**
+- 用了"应该"、"大概"、"看起来"
+- 在验证前就表露满意("Great!"、"Perfect!"、"Done!" 等)
+- 在没验证的情况下就要 commit/push/PR
+- 轻信 Agent 的成功报告
+- 依赖不完整的验证
+- 心想"就这一次"
+- 累了,只想赶紧收工
+- **任何在没跑验证的情况下暗示成功的措辞**
 
-## Rationalization Prevention
+## 防止自我合理化
 
-| Excuse | Reality |
+| 借口 | 现实 |
 |--------|---------|
-| "Should work now" | RUN the verification |
-| "I'm confident" | Confidence ≠ evidence |
-| "Just this once" | No exceptions |
-| "Linter passed" | Linter ≠ compiler |
-| "Agent said success" | Verify independently |
-| "I'm tired" | Exhaustion ≠ excuse |
-| "Partial check is enough" | Partial proves nothing |
-| "Different words so rule doesn't apply" | Spirit over letter |
+| "现在应该能行了" | 去跑验证 |
+| "我很有信心" | 信心 ≠ 证据 |
+| "就这一次" | 没有例外 |
+| "Linter 过了" | Linter ≠ 编译器 |
+| "Agent 说 success" | 独立地去核实 |
+| "我累了" | 疲惫 ≠ 借口 |
+| "查一部分就够了" | 部分验证什么都证明不了 |
+| "换个说法,规则就不适用了" | 精神重于字面 |
 
-## Key Patterns
+## 关键套路
 
-**Tests:**
+**测试:**
 ```
 ✅ [Run test command] [See: 34/34 pass] "All tests pass"
 ❌ "Should pass now" / "Looks correct"
 ```
 
-**Regression tests (TDD Red-Green):**
+**回归测试(TDD 红-绿):**
 ```
 ✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
 ❌ "I've written a regression test" (without red-green verification)
 ```
 
-**Build:**
+**构建:**
 ```
 ✅ [Run build] [See: exit 0] "Build passes"
 ❌ "Linter passed" (linter doesn't check compilation)
 ```
 
-**Requirements:**
+**需求:**
 ```
 ✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
 ❌ "Tests pass, phase complete"
 ```
 
-**Agent delegation:**
+**Agent 委派:**
 ```
 ✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
 ❌ Trust agent report
 ```
 
-## When To Apply
+## 何时适用
 
-**ALWAYS before:**
-- ANY variation of success/completion claims
-- ANY expression of satisfaction
-- ANY positive statement about work state
-- Committing, PR creation, task completion
-- Moving to next task
-- Delegating to agents
+**以下情况之前永远适用:**
+- 任何形式的成功/完成声明
+- 任何满意的表露
+- 任何关于工作状态的正面陈述
+- 提交、创建 PR、任务完成
+- 转入下一个任务
+- 委派给 Agent
 
-**Rule applies to:**
-- Exact phrases
-- Paraphrases and synonyms
-- Implications of success
-- ANY communication suggesting completion/correctness
+**本规则适用于:**
+- 原话
+- 转述与同义表达
+- 对成功的暗示
+- 任何暗示完成/正确的沟通
