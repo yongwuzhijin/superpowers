@@ -1,98 +1,90 @@
 ---
 name: requesting-code-review
-description: 在完成任务、实现重要特性,或合并之前使用,用来核验工作是否达到要求
+description: 在完成任务、实现重要功能,或合并之前使用,用来核实工作是否满足需求
 ---
 
 # 请求代码评审
 
-派出一个代码评审子 Agent,趁问题还没连锁扩散时把它们揪出来。这个评审者拿到的是为评估精心准备的上下文——绝不是你这次会话的历史记录。这样能让评审者专注于工作成果本身,而不是你的思考过程,同时也为你自己保留上下文以便继续工作。
+派出一个代码评审子 Agent,在问题连锁扩散之前把它们抓出来。这个评审者拿到的是为评估精心准备的上下文 —— 绝不是你这次会话的历史记录。
 
-**核心原则:** 尽早评审,勤加评审。
+**核心原则:** 尽早评审,常常评审。
 
-## 何时请求评审
+## 什么时候请求评审
 
-**必须:**
-- 子 Agent 驱动开发中每完成一个任务后
-- 完成一个重要特性后
+**必做:**
+- subagent-driven development 中每个任务之后
+- 完成重要功能之后
 - 合并到 main 之前
 
-**可选但很有价值:**
-- 卡住的时候(换个新视角)
-- 重构之前(先摸清基线)
+**可选但有价值:**
+- 卡住的时候(换个新鲜视角)
+- 重构之前(先做基线检查)
 - 修完复杂 bug 之后
 
-## 如何请求
+## 怎么请求
 
 **1. 拿到 git SHA:**
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
+BASE_SHA=$(git rev-parse HEAD~1)  # 或 origin/main
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
 **2. 派出代码评审子 Agent:**
 
-派出一个 `general-purpose` 子 Agent,填写 [code-reviewer.md](code-reviewer.md) 里的模板
+派出一个 `general-purpose` 子 Agent,填好 [code-reviewer.md](code-reviewer.md) 里的模板
 
 **占位符:**
-- `{DESCRIPTION}` —— 你构建了什么的简要总结
-- `{PLAN_OR_REQUIREMENTS}` —— 它应该做什么
-- `{BASE_SHA}` —— 起始提交
-- `{HEAD_SHA}` —— 结束提交
+- `{DESCRIPTION}` - 你构建了什么的简要总结
+- `{PLAN_OR_REQUIREMENTS}` - 它应该做什么
+- `{BASE_SHA}` - 起始提交
+- `{HEAD_SHA}` - 结束提交
 
 **3. 根据反馈行动:**
-- 立即修复 Critical(严重)问题
-- 继续之前先修复 Important(重要)问题
-- 记下 Minor(次要)问题留待以后
-- 如果评审者错了,反驳(带上理由)
+- 立刻修 Critical(严重)问题
+- 继续往下之前先修 Important(重要)问题
+- Minor(次要)问题记下来留待以后
+- 如果评审者错了就反驳(带上理由)
 
 ## 示例
 
 ```
-[Just completed Task 2: Add verification function]
+[刚完成任务 2:新增校验函数]
 
-You: Let me request code review before proceeding.
+你:继续往下之前,我来请求一次代码评审。
 
 BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
 HEAD_SHA=$(git rev-parse HEAD)
 
-[Dispatch code reviewer subagent]
-  DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
+[派出代码评审子 Agent]
+  DESCRIPTION: 新增了 verifyIndex() 和 repairIndex(),含 4 种问题类型
+  PLAN_OR_REQUIREMENTS: docs/superpowers/plans/deployment-plan.md 中的任务 2
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 
-[Subagent returns]:
-  Strengths: Clean architecture, real tests
-  Issues:
-    Important: Missing progress indicators
-    Minor: Magic number (100) for reporting interval
-  Assessment: Ready to proceed
+[子 Agent 返回]:
+  Strengths(优点): 架构清晰,测试是真的
+  Issues(问题):
+    Important(重要): 缺少进度提示
+    Minor(次要): 上报间隔用了魔法数字(100)
+  Assessment(评估): 可以继续
 
-You: [Fix progress indicators]
-[Continue to Task 3]
+你:[修好进度提示]
+[继续到任务 3]
 ```
 
-## 与工作流的衔接
+## 常见的自我合理化
 
-**子 Agent 驱动开发:**
-- 每个任务后都评审
-- 趁问题还没叠加时揪出来
-- 修完再进入下一个任务
-
-**执行计划:**
-- 每个任务后,或在自然的检查点评审
-- 拿到反馈,应用,继续
-
-**临时开发:**
-- 合并前评审
-- 卡住时评审
+| 借口 | 现实 |
+|--------|------|
+| "我自己看看 diff 就行了,不用派评审者" | 你是协调者 —— 就地在会话里看 diff 会烧掉你继续推进工作所需的上下文窗口。派一个评审子 Agent:diff 和评估都待在它的上下文里,回到你这儿的只有结论。 |
+| "评审者需要我整个会话历史才能理解这次改动" | 交给它精心准备的上下文,绝不是你这次会话的历史。这样评审者才会盯着工作成果,而不是你的思考过程。 |
 
 ## 危险信号
 
 **绝不要:**
-- 因为"这很简单"就跳过评审
-- 忽视 Critical(严重)问题
-- 带着没修的 Important(重要)问题继续
+- 因为"很简单"就跳过评审
+- 无视 Critical(严重)问题
+- Important(重要)问题没修就往下走
 - 和站得住脚的技术反馈争辩
 
 **如果评审者错了:**
