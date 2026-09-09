@@ -7,7 +7,7 @@
 ```
 Subagent (general-purpose):
   description: "Review Task N (spec + quality)"
-  model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
+  model: [MODEL — REQUIRED: choose per subagent-driven-development.md Model Selection; an omitted
          model silently inherits the session's most expensive one]
   prompt: |
     你正在评审一个任务的实现:先看它是否与需求相符,再看它是否构建良好。这是一道任务范围内的关卡,不是一次合并评审——一次针对整条分支的全面评审会在所有任务完成后单独进行。
@@ -115,7 +115,7 @@ Subagent (general-purpose):
 ```
 
 **占位符:**
-- `[MODEL]` — REQUIRED:按 SKILL.md 模型选择规则挑选评审者模型
+- `[MODEL]` — REQUIRED:按 `subagent-driven-development.md` 的模型选择规则挑选评审者模型
 - `[BRIEF_FILE]` — REQUIRED:任务简报文件(`scripts/task-brief PLAN N` 会打印路径;与实现者所用的是同一个文件)
 - `[GLOBAL_CONSTRAINTS]` — 从计划的 Global Constraints 章节或 spec 里逐字抄来的约束性要求:确切的值、格式,以及各组件之间被言明的关系(不是流程规则——那些已经在本模板里了)
 - `[REPORT_FILE]` — REQUIRED:实现者写入其详细报告的那个文件

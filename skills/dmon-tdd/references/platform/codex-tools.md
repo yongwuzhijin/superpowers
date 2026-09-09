@@ -47,7 +47,7 @@ BRANCH=$(git branch --show-current)
 - `GIT_DIR != GIT_COMMON` → 已经在一个关联的 worktree 里(跳过创建)
 - `BRANCH` 为空 → 处于分离 HEAD 状态(无法从沙箱里建分支/推送/开 PR)
 
-关于每个技能如何使用这些信号,参见 `using-git-worktrees` 的 Step 0 和 `finishing-a-development-branch` 的 Step 1。
+关于每个技能如何使用这些信号,参见 `../shared/using-git-worktrees.md` 的 Step 0 和 `../6-finishing/finishing-a-development-branch.md` 的 Step 1。
 
 ## Codex App 收尾
 

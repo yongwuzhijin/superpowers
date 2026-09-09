@@ -32,7 +32,15 @@ for (const file of files) {
     if (!clean) continue;
     checked++;
     const resolved = path.join(path.dirname(file), clean);
-    if (!fs.existsSync(resolved)) {
+    // 必须是文件：existsSync 对目录也返回 true，会让 `](../platform/)`
+    // 这类指向目录的链接假绿。statSync 在目标不存在时抛，故须 try。
+    let isFile = false;
+    try {
+      isFile = fs.statSync(resolved).isFile();
+    } catch (e) {
+      isFile = false;
+    }
+    if (!isFile) {
       console.log(`  [FAIL] ${file} -> ${target}`);
       failures++;
     }

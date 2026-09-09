@@ -13,7 +13,7 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 
 **开始时先声明:** "I'm using the writing-plans skill to create the implementation plan."
 
-**上下文:** 如果在隔离的 worktree 中工作,它应该已经在执行时通过 `../shared/using-git-worktrees.md` 创建好了。
+**上下文:** 如果在隔离的 worktree 中工作,它应该已经在执行时通过 `../shared/using-git-worktrees.md` 技能创建好了。
 
 **计划保存到:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (用户对计划存放位置的偏好可覆盖此默认值)
@@ -53,7 +53,7 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `../3-implementation/subagent-driven-development.md` (recommended) or `../3-implementation/executing-plans.md` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `skills/dmon-tdd/references/3-implementation/subagent-driven-development.md` (recommended) or `skills/dmon-tdd/references/3-implementation/executing-plans.md` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -152,7 +152,7 @@ git commit -m "feat: add specific feature"
 
 **1. 子 Agent 驱动(推荐)** - 我为每个任务派发一个全新的子 Agent,任务之间做评审,快速迭代
 
-**2. 内联执行** - 在本会话中用 executing-plans 执行任务,带检查点的批量执行
+**2. 内联执行** - 在本会话中用 `../3-implementation/executing-plans.md` 执行任务,带检查点的批量执行
 
 **选哪种?"**
 

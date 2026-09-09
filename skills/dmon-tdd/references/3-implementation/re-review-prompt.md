@@ -7,7 +7,7 @@
 ```
 Subagent (general-purpose):
   description: "Re-review Task N fix round R"
-  model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
+  model: [MODEL — REQUIRED: choose per subagent-driven-development.md Model Selection; an omitted
          model silently inherits the session's most expensive one]
   prompt: |
     你正在复审一个任务的一个修复轮次。此前一次评审产出了若干发现;一个实现者已尝试修复它们。你的活儿是:对每一条发现下裁决,并检视修复 diff——别的都不干。
@@ -69,7 +69,7 @@ Subagent (general-purpose):
 ```
 
 **占位符:**
-- `[MODEL]` — REQUIRED:按 SKILL.md 模型选择规则挑选评审者模型;对小修复 diff 的范围受限复审用便宜到中档的模型即可
+- `[MODEL]` — REQUIRED:按 `subagent-driven-development.md` 的模型选择规则挑选评审者模型;对小修复 diff 的范围受限复审用便宜到中档的模型即可
 - `[BRIEF_FILE]` — 任务简报文件(与实现者所用的是同一个文件)
 - `[FINDINGS]` — 上一次评审里的 Critical/Important 发现和 spec 缺口,逐字抄来,每条一个 bullet
 - `[REPORT_FILE]` — 实现者的报告文件(修复报告已追加其中)
