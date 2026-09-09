@@ -174,7 +174,7 @@ description: 遇到任何 bug、测试失败或非预期行为时,在提出修�
    - 尽量做成自动化测试
    - 没有测试框架就写一次性的测试脚本
    - 修复之前必须先有它
-   - 用 `superpowers:test-driven-development` 技能来写像样的失败测试
+   - 用 `../shared/test-driven-development.md` 技能来写像样的失败测试
 
 2. **实施单一修复**
    - 针对已识别出的根因
@@ -186,7 +186,7 @@ description: 遇到任何 bug、测试失败或非预期行为时,在提出修�
    - 测试现在通过了吗?
    - 没有弄坏其他测试吧?
    - 问题真的解决了吗?
-   - 在宣称成功之前,用 `superpowers:verification-before-completion` 技能
+   - 在宣称成功之前,用 `../5-review/verification-before-completion.md` 技能
 
 4. **如果修复不起作用**
    - 停

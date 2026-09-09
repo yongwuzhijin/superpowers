@@ -7,8 +7,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-USING_SKILL="$REPO_ROOT/skills/using-git-worktrees/SKILL.md"
-FINISHING_SKILL="$REPO_ROOT/skills/finishing-a-development-branch/SKILL.md"
+USING_SKILL="$REPO_ROOT/skills/dmon-tdd/references/shared/using-git-worktrees.md"
+FINISHING_SKILL="$REPO_ROOT/skills/dmon-tdd/references/6-finishing/finishing-a-development-branch.md"
 
 failures=0
 

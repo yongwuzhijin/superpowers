@@ -11,12 +11,12 @@ description: 当你已有一份写好的实现计划、需要在独立会话中�
 
 **开始时先声明:** "I'm using the executing-plans skill to implement this plan."
 
-**注意:** 告诉你的人类搭档,Superpowers 在能用子 Agent 时效果好得多(Claude Code、Codex CLI、Codex App、Copilot CLI 和 Gemini CLI 都符合条件;各平台的工具参考见 `../using-superpowers/references/`)。如果子 Agent 可用,请改用 superpowers:subagent-driven-development,而不是本技能。
+**注意:** 告诉你的人类搭档,Superpowers 在能用子 Agent 时效果好得多(Cursor、Claude Code 和 Codex 都符合条件;各平台的工具参考见 `../platform/codex-tools.md`)。如果子 Agent 可用,请改用 `subagent-driven-development.md`,而不是本技能。
 
 ## 流程
 
 ### 第 1 步:加载并评审计划
-1. 确保有一个隔离的工作空间:用 superpowers:using-git-worktrees 新建一个,或核实已有的那个
+1. 确保有一个隔离的工作空间:用 `../shared/using-git-worktrees.md` 新建一个,或核实已有的那个
 2. 读取计划文件
 3. 批判性地评审——找出对计划的任何疑问或顾虑
 4. 若有顾虑:开工前先向你的人类搭档提出来
@@ -34,7 +34,7 @@ description: 当你已有一份写好的实现计划、需要在独立会话中�
 
 所有任务完成并验证后:
 - 声明:"I'm using the finishing-a-development-branch skill to complete this work."
-- **必用子技能(REQUIRED SUB-SKILL):** 使用 superpowers:finishing-a-development-branch
+- **必用子技能(REQUIRED SUB-SKILL):** 阅读并遵循 `../6-finishing/finishing-a-development-branch.md`
 - 遵循该技能来验证测试、给出选项、执行所选方案
 
 ## 何时停下来求助

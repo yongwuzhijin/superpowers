@@ -7,8 +7,8 @@
 
 set -u
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-STOP="$SCRIPT_DIR/../../skills/brainstorming/scripts/stop-server.sh"
-SERVER="$SCRIPT_DIR/../../skills/brainstorming/scripts/server.cjs"
+STOP="$SCRIPT_DIR/../../skills/dmon-tdd/references/1-requirement-specify/scripts/stop-server.sh"
+SERVER="$SCRIPT_DIR/../../skills/dmon-tdd/references/1-requirement-specify/scripts/server.cjs"
 
 PASS=0; FAIL=0
 PIDS=()

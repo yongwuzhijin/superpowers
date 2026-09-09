@@ -205,4 +205,4 @@ spec 自审循环通过之后,继续往下之前请用户评审写好的 spec:
 一个关于 UI 话题的问题,并不自动就是一个可视化问题。"在这个语境里 personality 是什么意思?"是概念性问题 —— 用终端。"哪个向导布局更好?"是可视化问题 —— 用浏览器。
 
 如果他们同意用这个助手,在继续之前先读一读详细指南:
-`skills/brainstorming/visual-companion.md`
+`visual-companion.md`

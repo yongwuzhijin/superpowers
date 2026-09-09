@@ -13,7 +13,7 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 
 **开始时先声明:** "I'm using the writing-plans skill to create the implementation plan."
 
-**上下文:** 如果在隔离的 worktree 中工作,它应该已经在执行时通过 `superpowers:using-git-worktrees` 技能创建好了。
+**上下文:** 如果在隔离的 worktree 中工作,它应该已经在执行时通过 `../shared/using-git-worktrees.md` 创建好了。
 
 **计划保存到:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (用户对计划存放位置的偏好可覆盖此默认值)
@@ -53,7 +53,7 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `../3-implementation/subagent-driven-development.md` (recommended) or `../3-implementation/executing-plans.md` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -157,9 +157,9 @@ git commit -m "feat: add specific feature"
 **选哪种?"**
 
 **若选择子 Agent 驱动:**
-- **必用子技能(REQUIRED SUB-SKILL):** 使用 superpowers:subagent-driven-development
+- **必用子技能(REQUIRED SUB-SKILL):** 阅读并遵循 `../3-implementation/subagent-driven-development.md`
 - 每个任务一个全新子 Agent + 两阶段评审
 
 **若选择内联执行:**
-- **必用子技能(REQUIRED SUB-SKILL):** 使用 superpowers:executing-plans
+- **必用子技能(REQUIRED SUB-SKILL):** 阅读并遵循 `../3-implementation/executing-plans.md`
 - 带检查点的批量执行以便评审

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const {
   browserLauncherForPlatform
-} = require('../../skills/brainstorming/scripts/server.cjs');
+} = require('../../skills/dmon-tdd/references/1-requirement-specify/scripts/server.cjs');
 
 let passed = 0;
 let failed = 0;

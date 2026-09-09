@@ -206,7 +206,7 @@ const helperInjection = '<script>\n' + helperScript + '\n</script>';
 // ========== Helper Functions ==========
 
 function readSuperpowersVersion() {
-  const root = path.join(__dirname, '../../..');
+  const root = path.join(__dirname, '../../../../..');
   const manifests = [
     path.join(root, 'package.json'),
     path.join(root, '.codex-plugin/plugin.json')
