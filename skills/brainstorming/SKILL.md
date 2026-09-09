@@ -7,34 +7,78 @@ description: "在任何创造性工作之前你都必须先用它——创建功
 
 通过自然的协作式对话,帮你把点子打磨成成型的设计和 spec。
 
-先从理解当前项目的上下文入手,然后一次问一个问题,逐步把点子打磨清楚。等你搞明白要做的是什么,把设计拿出来给用户过目并获得批准。
+先判断请求需要多重的流程,然后沿相应路径推进:理解上下文、打磨想法、提出设计,并取得你的人类搭档批准。
 
 <HARD-GATE>
-在你拿出设计、并且用户已经批准之前,不要调用任何实现类技能、不要写任何代码、不要搭任何项目脚手架、也不要采取任何实现动作。这条对每个项目都适用,不管它看起来有多简单。
+在你向人类搭档说明打算怎么做、并获得批准之前,不要调用任何实现类技能、不要写任何代码、不要搭任何项目脚手架,也不要采取任何实现动作。下述每条路径、每项任务都适用——仪式可以随任务缩放,批准关卡永远不能省。
 </HARD-GATE>
 
-## 反模式:"这也太简单了,不用做设计"
+## 三条路径
 
-每个项目都要走这套流程。一个待办清单、一个单函数小工具、一处配置改动——统统都要。恰恰是"简单"项目里那些没被审视过的假设,最容易造成白忙活。设计可以很短(对真正简单的项目,几句话就够),但你必须把它拿出来并获得批准。
+在提出第一个问题之前,先给请求分类并明确说出来——例如“这看起来是一个边界明确的任务,所以我会在对话中给出简短设计,而不是编写 spec”——以便你的人类搭档纠正:
+
+- **探索(Spike)** —— 可行性问题(“能不能……”“是否可行……”“快速粗糙地试一下即可”),其产出是答案,而不是要保留的代码。用 2-3 句话说明问题和准备怎样验证,得到首肯后,在保证结论正确的前提下用成本最低的方式查明。无需设计文档或 spec 文件。以建议形式报告发现;期间构建的任何东西都必须标为一次性产物。
+- **边界明确(Bounded)** —— 对仓库中既有代码的一项范围清晰的改动,例如新增一个标志位、一个小接口或修复一个文件。熟悉这类应用并不等于边界明确——你要修改的流程必须已经存在于仓库中、可以直接阅读;没有既有流程可改,就不属于这一类。只问真正有影响的澄清问题,然后**在对话中**给出简短设计(几句话到几个短段落),并停下来。只有人类搭档明确同意设计后才能开始实现——边界明确任务的批准关卡与架构型任务同样严格。无需 spec 文件或实现计划文档。
+- **架构型(Architectural)** —— 新项目、新子系统、重构组件组合方式,或改变其他方依赖接口的改动。走完整流程:提问、比较方案、分段设计、书面 spec,再调用 writing-plans 技能。
+
+如果在两条路径之间犹豫,选择更重的那条。这个棘轮只能向上:任务中途发现隐藏复杂度时,必须停下来说明情况并升级路径;不能在中途降级。
+
+## 反模式:“太简单,不需要批准”
+
+每条路径在实现前都必须以人类搭档批准你的意图收尾。待办清单、单函数工具、配置改动——设计或许只需对话中的两句话,但你**必须**先展示并获得批准。“简单”任务最容易因未经检验的假设而浪费工作。可以随简单程度缩减的是产物,绝不是批准。
+
+## 危险信号
+
+| 想法 | 现实 |
+|------|------|
+| “这太简单了,不需要设计” | 简单意味着短设计,不是没有设计。在对话中写两句话,然后等批准。 |
+| “我把它叫作边界明确,就能跳过 spec” | 想借标签省步骤本身就是疑点——选择更重的路径。 |
+| “范围明确而且设计显而易见——他们阅读时我先开工” | 关卡在于批准,不在于设计篇幅。先展示,然后停下等明确同意。 |
+| “我熟悉这类应用,所以它边界明确” | 边界是否明确看仓库,不看你的熟悉程度。新项目没有既有流程,属于架构型任务。 |
+| “探索成功了,所以我就保留这段代码” | 探索的产出是答案。保留代码是一个新请求——重新分类。 |
+| “任务变大了,但我快做完了——不用重新分类” | 隐藏复杂度会使路径升级。停下来并说明情况。 |
+| “他们批准了探索,所以后续改动也算批准了” | 每项任务都要单独分类、单独获得批准。 |
 
 ## 清单
 
-下面每一项你都必须创建一个任务,并按顺序完成:
+先分类、宣布路径,然后为该路径的每一项创建任务并按顺序完成。
 
-1. **摸清项目上下文** —— 看看文件、文档、最近的提交
-2. **在恰当时机顺势提供可视化助手(visual companion)** —— 不要一上来就提。当第一次遇到某个问题"展示出来"确实比"描述出来"更清楚时,再顺势提出(单独发一条消息);用户同意后,它的浏览器标签页会为你打开。如果始终没冒出适合可视化的问题,那就永远别提。见下方 Visual Companion 一节。
-3. **提出澄清性问题** —— 一次一个,搞清楚目的/约束/成功标准
-4. **提出 2-3 个方案** —— 附上各自的取舍,以及你的推荐
-5. **拿出设计** —— 按各部分复杂度分段呈现,每一段之后都拿到用户批准
+**探索:**
+1. **摸清项目上下文** —— 足以界定验证问题即可
+2. **展示问题与验证计划** —— 2-3 句话
+3. **获得批准** —— 点头同意即可
+4. **开展调查** —— 在保证结论正确的前提下尽量低成本
+5. **报告发现** —— 给出建议;任何构建产物都标为一次性
+
+**边界明确:**
+1. **摸清项目上下文** —— 查看文件、文档、最近提交
+2. **提出澄清性问题** —— 一次一个,只问有影响的问题
+3. **在对话中给出短设计** —— 方法、涉及文件、测试方式
+4. **获得批准** —— 停下来等待明确的“同意”;展示设计的同时就开工等同于跳过关卡
+5. **实现** —— 按常规开发流程推进(TDD 仍然适用);不写计划文档
+
+**架构型:**
+1. **摸清项目上下文** —— 查看文件、文档、最近提交
+2. **在恰当时机顺势提供可视化助手(visual companion)** —— 不要一上来就提。当第一次遇到某个问题“展示出来”确实比“描述出来”更清楚时,再单独发消息提议;用户同意后,浏览器标签页会打开。如果始终没有适合可视化的问题,就永远别提。见下方 Visual Companion 一节。
+3. **提出澄清性问题** —— 一次一个,搞清楚目的、约束和成功标准
+4. **提出 2-3 个方案** —— 附上取舍与推荐方案
+5. **拿出设计** —— 按复杂度分段展示,每段之后取得用户批准
 6. **写设计文档** —— 保存到 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` 并提交
-7. **spec 自审** —— 快速就地检查占位符、自相矛盾、含糊、范围(见下文)
-8. **用户评审写好的 spec** —— 继续往下之前,请用户评审 spec 文件
-9. **过渡到实现** —— 调用 writing-plans 技能来创建实现计划
+7. **spec 自审** —— 快速就地检查占位符、矛盾、歧义和范围(见下文)
+8. **用户评审书面 spec** —— 继续前请用户评审 spec 文件
+9. **过渡到实现** —— 调用 writing-plans 技能创建实现计划
 
 ## 流程图
 
 ```dot
 digraph brainstorming {
+    "Classify: spike / bounded / architectural" [shape=diamond];
+    "Present question + probe (2-3 sentences)" [shape=box];
+    "Ask clarifying questions (bounded)" [shape=box];
+    "Present short design in chat" [shape=box];
+    "Human approves?" [shape=diamond];
+    "Investigate; report recommendation" [shape=doublecircle];
+    "Implement via normal workflow (no plan doc)" [shape=doublecircle];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 approaches" [shape=box];
@@ -44,23 +88,35 @@ digraph brainstorming {
     "Spec self-review\n(fix inline)" [shape=box];
     "User reviews spec?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
+    "Hidden complexity? Upgrade path" [shape=box];
 
+    "Classify: spike / bounded / architectural" -> "Present question + probe (2-3 sentences)" [label="spike"];
+    "Classify: spike / bounded / architectural" -> "Ask clarifying questions (bounded)" [label="bounded"];
+    "Classify: spike / bounded / architectural" -> "Explore project context" [label="architectural"];
+    "Present question + probe (2-3 sentences)" -> "Human approves?";
+    "Ask clarifying questions (bounded)" -> "Present short design in chat";
+    "Present short design in chat" -> "Human approves?";
+    "Human approves?" -> "Investigate; report recommendation" [label="spike: yes"];
+    "Human approves?" -> "Implement via normal workflow (no plan doc)" [label="bounded: yes"];
+    "Hidden complexity? Upgrade path" -> "Classify: spike / bounded / architectural";
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="否,需修改"];
-    "User approves design?" -> "Write design doc" [label="是"];
+    "User approves design?" -> "Present design sections" [label="no, revise"];
+    "User approves design?" -> "Write design doc" [label="yes"];
     "Write design doc" -> "Spec self-review\n(fix inline)";
     "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="要求改动"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="已批准"];
+    "User reviews spec?" -> "Write design doc" [label="changes requested"];
+    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
 }
 ```
 
-**终态是调用 writing-plans。** 不要调用 frontend-design、mcp-builder 或任何其他实现类技能。头脑风暴之后你唯一会调用的技能就是 writing-plans。
+**终态由路径决定。** 架构型:头脑风暴后唯一调用的技能是 writing-plans——不要调用 frontend-design、mcp-builder 或其他实现类技能。边界明确:获得批准后直接进入常规开发流程,不写计划文档。探索:终态是报告建议。
 
 ## 具体流程
+
+下面各小节适用于边界明确与架构型路径(探索路径在“展示验证方案并获得首肯”之后转入调查)。从**探索方案**开始的内容属于架构型深度——对于边界明确的工作,了解上下文、提出几个问题并在对话中给出短设计,就是完整流程。
 
 **理解这个点子:**
 
@@ -100,7 +156,7 @@ digraph brainstorming {
 - 如果既有代码存在会影响本次工作的问题(比如某个文件长得太大、边界不清、职责纠缠在一起),就把有针对性的改进纳入设计 —— 就像一个好开发者会顺手改进自己正在动的代码那样。
 - 不要提出不相关的重构。始终聚焦在服务于当前目标的事情上。
 
-## 设计之后
+## 设计之后(架构型路径)
 
 **文档化:**
 

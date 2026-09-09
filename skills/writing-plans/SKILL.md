@@ -61,6 +61,8 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Spec:** [本计划所实现的 spec/设计文档路径——计划以 spec 为依据,因此 spec 必须随计划一起传递;执行者两者都要阅读]
+
 ## Global Constraints
 
 [The spec's project-wide requirements — version floors, dependency limits,

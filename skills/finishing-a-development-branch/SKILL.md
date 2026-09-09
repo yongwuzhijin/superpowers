@@ -155,6 +155,26 @@ git worktree remove "$WORKTREE_PATH"
 git worktree prune  # 自愈:清理掉任何过期的注册记录
 ```
 
+**如果删除被拒绝**(`contains modified or untracked files`):这个工作树里有只存在于此处的文件——未提交的计划、笔记或临时工作。绝不要擅自使用 `--force`。把风险展示给你的人类搭档并询问:
+
+```bash
+git -C "$WORKTREE_PATH" status --porcelain -uall
+```
+
+```
+Worktree removal refused — these files were never committed:
+
+<file list>
+
+1. Commit them to <branch> before cleanup
+2. Move them into <main repo root>
+3. Delete them (unrecoverable)
+
+Which?
+```
+
+按选择执行,然后再删除工作树。
+
 **否则:** 宿主环境拥有这个工作空间 —— 原地保留。如果你的平台提供了退出工作空间的工具,就用它。
 
 ## 快速参考
@@ -176,6 +196,7 @@ git worktree prune  # 自愈:清理掉任何过期的注册记录
 | "'嗯,把它删了吧'算作确认了" | 只有键入 `discard` 这个词才授权删除。 |
 | "PR 已经建好了,所以工作树现在是碍事的杂物了" | PR 反馈是在那个工作树里修的。它会一直留到工作落地为止。 |
 | "另一个工作树看起来过期了 —— 我顺手也清了它" | 只清理 `.worktrees/` 或 `worktrees/` 之下的工作树。其余的都归宿主所有。 |
+| "删除被拒绝了——用 `--force` 只是把清理做完" | 拒绝意味着有文件只存在于这个工作树。`--force` 会永久销毁它们。展示给你的人类搭档并询问。 |
 | "合并结果的失败大概是偶发的" | 合并结果失败会让一切停下。分支和工作树原地不动,你去排查。 |
 | "基分支明摆着就是 main" | 确认分叉点或者问一句。合并进错误的基分支,撤销代价很大。 |
 | "推送被拒了 —— force-push 能解决" | 推送被拒意味着远端动过了。去排查;只在你的人类搭档明确请求时才 force-push。 |

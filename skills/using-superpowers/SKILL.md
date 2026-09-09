@@ -56,6 +56,7 @@ description: 在开启任何对话时使用——它确立了如何查找和使�
 - Codex: `references/codex-tools.md`
 - Pi: `references/pi-tools.md`
 - Antigravity: `references/antigravity-tools.md`
+- Hermes Agent: `references/hermes-tools.md`
 
 ## 用户指令
 

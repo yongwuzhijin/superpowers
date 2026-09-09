@@ -34,6 +34,10 @@ Subagent (general-purpose):
 
     Your review is read-only on this checkout. Do not mutate the working tree, the index, HEAD, or branch state in any way. Use tools like `git show`, `git diff`, and `git log` to inspect history. If you need a working copy of a different revision, check it out into a separate temporary directory (e.g. `git worktree add /tmp/review-[SHA] [SHA]`) — never move HEAD on this checkout.
 
+    ## 不要派发子 Agent
+
+    这项评审全部由你自己完成。绝不要派子 Agent 去评审部分 diff,也不要另派评审者寻求第二意见。这个流程已经提供了这项工作所需的全部评审席位;你派出的评审者会以完整成本重复其中一次评审,而它的裁决在流程中不作数。如果 diff 太大,一次看不完,就自己分几轮评审,并在报告中说明。
+
     ## What to Check
 
     **Plan alignment:**

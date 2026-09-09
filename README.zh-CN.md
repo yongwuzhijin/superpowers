@@ -3,15 +3,33 @@
 Superpowers 是一套面向你的编码 Agent 的完整软件开发方法论,它建立在一组可组合的技能之上,再加上一些初始指令,确保你的 Agent 真的会去用这些技能。
 
 
-## 我们在招人!
+## 目录
 
-我们正在招一位全职伙伴,帮忙打理 Superpowers 的社区和代码工作。
-职位详情可以看这里:https://primeradiant.com/jobs/superpowers-community-engineer/
-如果你觉得身边有合适的人,一定记得把他们推荐给我们。
-
-## 快速开始
-
-给你的 Agent 装上 Superpowers:[Claude Code](#claude-code)、[Antigravity](#antigravity)、[Codex App](#codex-app)、[Codex CLI](#codex-cli)、[Cursor](#cursor)、[Factory Droid](#factory-droid)、[Gemini CLI](#gemini-cli)、[GitHub Copilot CLI](#github-copilot-cli)、[Kimi Code](#kimi-code)、[OpenCode](#opencode)、[Pi](#pi)。
+- [它是怎么运作的](#它是怎么运作的)
+- [商业服务](#商业服务)
+- [开始使用](#安装)
+  - [Claude Code](#claude-code)
+  - [Antigravity](#antigravity)
+  - [Codex App](#codex-app)
+  - [Codex CLI](#codex-cli)
+  - [Cursor](#cursor)
+  - [Devin CLI](#devin-cli)
+  - [Factory Droid](#factory-droid)
+  - [Gemini CLI](#gemini-cli)
+  - [GitHub Copilot CLI](#github-copilot-cli)
+  - [Grok Build CLI](#grok-build-cli)
+  - [Kimi Code](#kimi-code)
+  - [OpenCode](#opencode)
+  - [Pi](#pi)
+  - [Hermes Agent](#hermes-agent)
+- [基础工作流](#基础工作流)
+- [社区](#社区)
+- [里面都有什么](#里面都有什么)
+- [理念](#理念)
+- [参与贡献](#参与贡献)
+- [更新](#更新)
+- [许可证](#许可证)
+- [可视化伴随功能的遥测](#可视化伴随功能的遥测telemetry)
 
 ## 它是怎么运作的
 
@@ -108,6 +126,20 @@ Superpowers 可通过 [Codex 官方插件市场](https://github.com/openai/plugi
 
 - 或者在插件市场里搜索 "superpowers"。
 
+### Devin CLI
+
+- 从本仓库安装插件:
+
+  ```bash
+  devin plugins install obra/superpowers
+  ```
+
+- 更新到最新版本:
+
+  ```bash
+  devin plugins update superpowers
+  ```
+
 ### Factory Droid
 
 - 注册这个插件市场:
@@ -148,6 +180,22 @@ Superpowers 可通过 [Codex 官方插件市场](https://github.com/openai/plugi
 
   ```bash
   copilot plugin install superpowers@superpowers-marketplace
+  ```
+
+### Grok Build CLI
+
+Superpowers 可通过 [Grok 官方插件市场](https://github.com/xai-org/plugin-marketplace)获取。
+
+- 从 xAI 官方市场安装插件:
+
+  ```bash
+  grok plugin install superpowers@xai-official --trust
+  ```
+
+- 或者在 TUI 中打开插件市场,搜索 Superpowers 并安装:
+
+  ```text
+  /marketplace
   ```
 
 ### Kimi Code
@@ -199,6 +247,16 @@ pi -e /path/to/superpowers
 
 这个 Pi 包会加载 Superpowers 的各项技能,以及一个小扩展——它会在会话启动时、以及每次压缩(compaction)之后,把 `using-superpowers` 引导程序注入进来。Pi 原生支持技能,所以不需要兼容用的 `Skill` 工具。子 Agent 和任务清单相关的工具仍然是可选的 Pi 配套包。
 
+### Hermes Agent
+
+从本仓库把 Superpowers 安装为 Hermes 插件:
+
+```bash
+hermes plugins install obra/superpowers --enable
+```
+
+安装后重启所有正在运行的 Hermes 会话。注意:Hermes 没有上下文压缩后的钩子,因此在非常长的会话中,如果压缩越过了第一轮,引导内容会丢失——若技能不再自动触发,请启动一个新会话。
+
 ## 基础工作流
 
 1. **brainstorming** —— 在写代码之前激活。通过提问打磨粗糙的想法,探索各种备选方案,分小节呈现设计供你确认。保存设计文档。
@@ -216,6 +274,14 @@ pi -e /path/to/superpowers
 7. **finishing-a-development-branch** —— 在任务完成时激活。验证测试,呈现各种选项(合并/PR/保留/丢弃),并清理 worktree。
 
 **Agent 在做任何任务之前,都会检查有没有相关的技能。** 这些是强制性的工作流,不是建议。
+
+## 社区
+
+Superpowers 由 [Jesse Vincent](https://blog.fsck.com) 以及 [Prime Radiant](https://primeradiant.com) 的其他伙伴们打造。
+
+- **Discord**:[加入我们](https://discord.gg/35wsABTejz),获取社区支持、提问,并分享你正在用 Superpowers 做的东西
+- **Issues**:https://github.com/obra/superpowers/issues
+- **发布公告**:[订阅](https://primeradiant.com/superpowers/)以便在有新版本时收到通知
 
 ## 里面都有什么
 
@@ -277,11 +343,3 @@ MIT License —— 详见 LICENSE 文件。
 ## 可视化伴随功能的遥测(telemetry)
 
 因为技能和插件不会给创作者提供任何反馈,我们完全不知道你们当中有多少人在用 Superpowers。默认情况下,brainstorming 那个可选的可视化伴随功能上的 Prime Radiant logo 是从我们网站加载的。它会带上正在使用的 Superpowers 版本。它不会包含任何关于你的项目、prompt 或编码 Agent 的细节。我们看不到你的点击,也看不到任何关于你在做什么东西的信息。这能帮我们对有多少人在用 Superpowers、以及他们用的是哪个版本,有个大致的了解。它 100% 是可选的。要关闭它,把环境变量 `SUPERPOWERS_DISABLE_TELEMETRY` 设为任意为真的值即可。Superpowers 同样也尊重 Claude Code 的 `DISABLE_TELEMETRY` 和 `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` 这两个退出选项。
-
-## 社区
-
-Superpowers 由 [Jesse Vincent](https://blog.fsck.com) 以及 [Prime Radiant](https://primeradiant.com) 的其他伙伴们打造。
-
-- **Discord**:[加入我们](https://discord.gg/35wsABTejz),获取社区支持、提问,并分享你正在用 Superpowers 做的东西
-- **Issues**:https://github.com/obra/superpowers/issues
-- **发布公告**:[订阅](https://primeradiant.com/superpowers/)以便在有新版本时收到通知

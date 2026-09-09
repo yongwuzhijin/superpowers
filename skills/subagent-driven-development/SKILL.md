@@ -13,7 +13,11 @@ description: 在当前会话中执行由若干相互独立任务组成的实现�
 
 **旁白(Narration):** 工具调用之间,至多说一句简短的话——账本(ledger)和工具结果本身就是记录。
 
-**持续执行:** 任务之间不要停下来跟你的人类搭档确认。把计划里的所有任务一口气执行完,不要停。只有以下几种情况才该停:遇到你无法解决的 BLOCKED 状态、真的没法往下走的歧义,或者所有任务都完成了。"要我继续吗?"这类询问和进度小结都是在浪费他们的时间——他们让你执行计划,那就执行。
+**持续执行:** 任务之间不要停下来跟你的人类搭档确认。把计划里的所有任务一口气执行完,不要停。只有下面明确列出的四种情况,或所有任务完成时才停。"要我继续吗?"这类询问和进度小结都是在浪费他们的时间——他们让你执行计划,那就执行。
+
+**做裁决,不要停摆。** 正在执行的计划不等待人类。冲突、歧义、计划缺陷、原本需要请示才能突破的轮次上限——由你决定。spec 是约束性权威,计划是对 spec 的论证;两者都没给答案时,由你的判断定夺。把每个决定按 `Ruling: <你的决定> — <理由> — <如果错了会付出什么代价>` 记入账本,然后继续。错误裁决带来的返工对人类搭档可见、也可撤销;会话停在问题上会浪费他们一整天,却换不来任何东西。
+
+只有四类事情会让你停下:不可逆或破坏性操作;安全敏感操作;按惯例需要先询问、且会影响此工作树之外的副作用(合并、推送到共享分支、发布);以及计划坏到每条前进路线都只能靠猜。遇到这些才停下来询问。
 
 ## 何时使用
 
@@ -56,14 +60,14 @@ digraph process {
         "Generate review package, dispatch task reviewer (./task-reviewer-prompt.md)" [shape=box];
         "Spec ✅ and quality approved?" [shape=diamond];
         "Finding conflicts with plan text?" [shape=diamond];
-        "Ask human partner which governs" [shape=box];
+        "Rule on the conflict, ledger the ruling" [shape=box];
         "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [shape=box];
         "Dispatch scoped re-review (./re-review-prompt.md)" [shape=box];
         "All findings addressed?" [shape=diamond];
         "R = 5?" [shape=diamond];
         "Adjudicate each open finding" [shape=box];
         "Any load-bearing finding?" [shape=diamond];
-        "STOP: report BLOCKED to human partner" [shape=box];
+        "Rule and continue; stop only if every path forward is a guess" [shape=box];
         "Park findings in ledger with rulings" [shape=box];
         "Append completion to ledger, mark todo complete" [shape=box];
     }
@@ -84,8 +88,8 @@ digraph process {
     "Generate review package, dispatch task reviewer (./task-reviewer-prompt.md)" -> "Spec ✅ and quality approved?";
     "Spec ✅ and quality approved?" -> "Append completion to ledger, mark todo complete" [label="yes"];
     "Spec ✅ and quality approved?" -> "Finding conflicts with plan text?" [label="no"];
-    "Finding conflicts with plan text?" -> "Ask human partner which governs" [label="yes"];
-    "Ask human partner which governs" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model";
+    "Finding conflicts with plan text?" -> "Rule on the conflict, ledger the ruling" [label="yes"];
+    "Rule on the conflict, ledger the ruling" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model";
     "Finding conflicts with plan text?" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no"];
     "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" -> "Dispatch scoped re-review (./re-review-prompt.md)";
     "Dispatch scoped re-review (./re-review-prompt.md)" -> "All findings addressed?";
@@ -94,7 +98,7 @@ digraph process {
     "R = 5?" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no - next round"];
     "R = 5?" -> "Adjudicate each open finding" [label="yes - breaker trips"];
     "Adjudicate each open finding" -> "Any load-bearing finding?";
-    "Any load-bearing finding?" -> "STOP: report BLOCKED to human partner" [label="yes"];
+    "Any load-bearing finding?" -> "Rule and continue; stop only if every path forward is a guess" [label="yes"];
     "Any load-bearing finding?" -> "Park findings in ledger with rulings" [label="no"];
     "Park findings in ledger with rulings" -> "Append completion to ledger, mark todo complete";
     "Append completion to ledger, mark todo complete" -> "More tasks remain?";
@@ -118,14 +122,16 @@ digraph process {
 - 账本就是你的恢复地图:它记下的那些提交(commit)确实存在于 git 里,哪怕你的上下文已经不记得创建过它们。压缩之后,相信账本和 `git log`,别信自己的记忆。
 - `git clean -fdx` 会摧毁这个工作空间(它是被 git 忽略的临时草稿区);万一发生了,从 `git log` 恢复。
 
-把计划从头到尾读一遍,记下它的上下文和 Global Constraints(全局约束),并为每个任务建一个 todo。
+把计划从头到尾读一遍,记下它的上下文和 Global Constraints(全局约束),并为每个任务建一个 todo。如果计划标明了 Spec,也要读它:spec 是约束性权威,计划是对 spec 的论证,计划内部的冲突要依据 spec 解决。找不到 plan 所指向的 spec 时,在账本中注明——没有 spec 支撑的裁决都只是暂定。
 
-在派发 Task 1 之前,先把计划整体扫一遍找冲突:
+在派发 Task 1 之前,先把计划整体扫一遍找冲突,边检查边写下检查结果:
 
 - 相互矛盾的任务,或与计划的 Global Constraints 矛盾的任务
 - 计划明确要求、但评审标尺(rubric)会判定为缺陷的东西(比如一个什么都不断言的测试、逐字重复的逻辑块)
 
-把你发现的一切作为**一个**打包好的问题呈现给你的人类搭档——每条发现都紧挨着强制它的那段计划原文,问以哪个为准——在执行开始之前问,而不是在计划执行途中每发现一处就打断一次。如果扫描是干净的,不用吭声直接往下走。评审循环仍然是那些只有在实现中才会浮现的冲突的兜底网。
+扫描结果必须是一张表,而不是一句结论。任何两个共享文件或接口的任务都要有一行:列出这两个任务、一个产出了什么、另一个消费了什么,以及你的检查结果。每个任务也都要有一行:它自身的描述是否一致——指定的测试是否匹配指定的代码、创建的文件是否匹配后续要修改的文件。只说“扫描干净”却没有这些行,就等于没有真正扫描。
+
+把表写进账本。执行开始前,对发现的每个问题作出裁决——把发现和强制它的计划原文放在一起判断——并把每条裁决记入账本。如果扫描干净,不用吭声直接往下走。对扫描发现的每个冲突都作出裁决——spec 是约束性权威,计划是其论证——把裁决记在对应行旁边,然后派发 Task 1。评审循环仍然是那些只有在实现中才会浮现的冲突的兜底网。
 
 ## 模型选择
 
@@ -152,7 +158,11 @@ digraph process {
 
 ## 任务循环
 
+**把同形的小任务批量派发。** 当计划列出多个彼此独立、类型相同的小改动——例如在多个文件里重复同样的一行修复、常量修改或字段添加——不要每个任务派一个子 Agent。组合成**一份**派发简报,列出每个文件及其改动,交给同一个子 Agent,并把整个 diff 作为一个单元评审。只有需要独立判断、独立测试或独立评审面的工作,才坚持一个任务一次派发。
+
 你粘进派发提示词里的一切——以及子 Agent 打印回来的一切——都会在这次会话余下的时间里常驻你的上下文,并在之后每一轮里被重新读取。把产物以文件形式交接。
+
+**等待已派发的子 Agent:** 绝不要用很短的超时轮询等待接口,也不要陷入一次安静且无期限的等待。只要还有本地工作——更新账本、准备下一个评审包、阅读报告——就继续做;子 Agent 的结果会自行到达。真正空闲时,用有界的长等待(平台允许时为五到十分钟),每段等待之间发一行状态,并核对活跃子 Agent:列出它们,追查任何已经完成却没有汇报的子 Agent。有界长等待保留了长等待几乎全部的效率,同时保证卡住或丢失的子 Agent 会在几分钟内被发现,而不是拖到会话末尾。
 
 ### 1. 派发实现者
 
@@ -161,6 +171,7 @@ digraph process {
 - **任务简报(Task brief):** 派发实现者之前,运行本技能的 `scripts/task-brief PLAN_FILE N`——它会把该任务的完整原文抽取到一个唯一命名的文件里并打印路径。组织派发内容时,让简报保持为需求的唯一来源。你的派发应包含:(1) 一行说明这个任务在整个项目里处于什么位置;(2) 简报路径,并这样引入它——"先读这个——它就是你的需求,里面有要逐字使用的确切值";(3) 早先任务里定下的、简报无从知晓的接口和决策;(4) 你对简报里注意到的任何歧义的处理决定;(5) 报告文件路径和报告约定。确切的值(数字、magic string、签名、测试用例)只出现在简报里。永远不要让子 Agent 去读整个计划文件。
 - **报告文件(Report file):** 实现者的报告文件按简报来命名(简报 `…/task-N-brief.md` → 报告 `…/task-N-report.md`),并写进派发提示词里。实现者把完整报告写在那里,只返回状态、提交、一行测试小结和顾虑。
 - 一份派发提示词只描述一个任务,不是会话的历史。别把累积的前序任务小结("Tasks 1-3 之后的状态")粘进后面的派发里——真实会话里有一次派发达到了 42k 字符,其中 99% 是粘贴进去的历史。一个全新的子 Agent 需要的是它的任务、它要触及的接口,以及全局约束。别的都不要。
+- 派发内容带有“不派发子 Agent”的约定(它已经写在实现者模板中):实现者绝不再派子 Agent——不派助手,更不能派评审者。评审由你在收到报告后派发。真实会话中,实现者自己派出的每个评审者都重复了控制器本来就会派发的任务评审——每个任务白白多花一个完整评审席位。
 - 如果早先某个任务把一条发现停放(park)在了这个任务要触及的区域,就在派发里带上指向那条账本条目的指针。
 - 从派发结果里记下实现者的 Agent 身份——修复循环的第 1-3 轮要恢复(resume)这个 Agent。
 - 永远不要并行派发多个实现子 Agent(会冲突)。
@@ -181,7 +192,7 @@ digraph process {
 1. 如果是上下文问题,提供更多上下文,用同一个模型重新派发
 2. 如果任务需要更多推理,换更强的模型重新派发
 3. 如果任务太大,拆成更小的块
-4. 如果是计划本身错了,上报给人类
+4. 如果是计划本身错了,对修正方案作出裁决、记入账本,并把裁决带入重新派发
 
 **绝不要**忽略一次上报,也不要在不做任何改变的情况下逼同一个模型重试。如果实现者说它卡住了,那就有什么东西必须变。
 
@@ -209,7 +220,7 @@ digraph process {
 在循环开始前,有两条路径能让它立刻离开:
 
 - 边走边把 Minor 发现记进进度账本里(`Task <N>: minor (deferred): <one-liner>`),并让最后的全面评审指向那份清单,好让它分诊(triage)出哪些必须在合并前修掉。一份没人读的汇总就是一次无声的丢弃。Minor 发现永远不进入循环。
-- 一条被标为 plan-mandated(计划强制)的发现——或者任何与计划原文所要求的东西相冲突的发现——是人类的决定,和任何计划矛盾一样:把这条发现和计划原文摆出来,问以哪个为准。别因为计划强制就把这条发现打发掉,也别在没问的情况下派发一个与计划相冲突的修复。
+- 一条被标为 plan-mandated(计划强制)的发现——或者任何与计划原文所要求的东西相冲突的发现——由你裁决:依据作为约束性权威的 spec,权衡发现和计划原文,在行动前作出决定并记入账本。别因为计划强制就把这条发现打发掉,也别在没有已记录裁决的情况下派发一个与计划相冲突的修复。
 
 其他所有东西都进入循环。一个修复轮次 = 一次修复派发加一次范围受限的复审。每个任务最多五轮:
 
@@ -228,9 +239,9 @@ digraph process {
 
 **断路器(The breaker)。** 当第 5 轮的复审仍留有开放发现时,停止派发。逐条自己裁决每一条开放发现——你手里有计划和跨任务上下文,而评审者没有:
 
-- **评审者错了,或者这一点可争议:** 停放它——`Task <N>: parked — <finding> — ruling: <why the code stands>`。最后的评审能看到双方。
+- **评审者错了,或者这一点可争议:** 停放它——`Task <N>: parked — <finding> — Ruling: <why the code stands>`。最后的评审能看到双方。
 - **是真的,但下游没有东西建立在它之上:** 同样停放它,附一条裁决说明它是真的但已延后。
-- **是真的且承重(load-bearing)**——后面某个任务建立在它之上,或者它暴露了一个计划缺陷:停。追加 `Task <N>: BLOCKED — <reason>`,并把这条发现、与它相撞的计划原文、以及修复历史一起上报给你的人类搭档。停放一个结构性失败,会让每一个依赖它的任务都建立在它之上,并把一个连最后评审也修不了的问题甩给它。
+- **是真的且承重(load-bearing)**——后面某个任务建立在它之上,或者它暴露了一个计划缺陷:裁定能解除下游阻塞的最小改动,并按 `Task <N>: Ruling: <finding> — <what you decided and why>` 记入账本,再把它带进下一个任务的派发。静默停放一个结构性失败,会让每一个依赖它的任务都建立在它之上。只有当该缺陷让每条前进路线都只能靠猜时才停下。
 
 只在达到上限时才裁决。为了结束一个循环而提早裁决,只是换了个名字的预判。每一次裁决都是一条账本条目——无声的丢弃是被禁止的。
 
@@ -247,9 +258,11 @@ digraph process {
 
 最后那次针对整条分支的评审也拿到一个包:运行 `scripts/review-package PLAN_FILE MERGE_BASE HEAD`(MERGE_BASE = 分支起始的那个提交,例如 `git merge-base main HEAD`),并把打印出的路径包含进最终评审的派发里,这样最终评审者读一个文件就好,而不用再用 git 命令重新推导分支 diff。在可用的最强模型上派发(见模型选择),使用 superpowers:requesting-code-review 的 [code-reviewer.md](../requesting-code-review/code-reviewer.md)。让它指向账本里的 deferred-minor 和 parked 这些行,好让它分诊出哪些必须在合并前修掉。
 
-如果最后针对整条分支的评审返回了发现,用完整的发现清单派发**一个**修复子 Agent——不是每条发现派一个修复者。逐条发现的修复者各自都要重建上下文、重跑套件;真实会话里一次最终评审的修复浪潮,花费超过了它所有任务的总和。然后只跑一次范围受限的复审来审这波修复(对修复范围跑 `scripts/review-package PLAN_FILE FIX_BASE HEAD`,用 [re-review-prompt.md](re-review-prompt.md))。像任务循环的断路器那样裁决任何残留的发现:停放并附裁决,或者在承重的那些上停下来。没有第二波修复——残留的承重发现会在 finishing-a-development-branch 呈现选项时浮现给你的人类搭档。
+如果最后针对整条分支的评审返回了发现,用完整的发现清单派发**一个**修复子 Agent——不是每条发现派一个修复者。逐条发现的修复者各自都要重建上下文、重跑套件;真实会话里一次最终评审的修复浪潮,花费超过了它所有任务的总和。然后只跑一次范围受限的复审来审这波修复(对修复范围跑 `scripts/review-package PLAN_FILE FIX_BASE HEAD`,用 [re-review-prompt.md](re-review-prompt.md))。像任务循环的断路器那样裁决任何残留的发现:停放并附裁决,或者对承重发现作出裁决并把决定记入账本。这里只有前述四类情况才会停下。没有第二波修复——残留的承重发现会在 finishing-a-development-branch 呈现选项时浮现给你的人类搭档。
 
 ## 收尾(Finish)
+
+删除任何东西之前,收集账本里所有包含 `Ruling:` 的行——执行前裁决、停放发现、断路器裁决,全部都要——并按发生顺序放进最终消息的“我作出的裁决”部分,每条都要说明如果判断错误会付出什么代价。这个清单必须完整:账本里有的裁决,清单里都要有。它是你代替人类搭档所做决定能够传达到他们那里的唯一渠道——他们会阅读并返工任何错误决定。随工作空间一起消失的裁决,就是秘密作出的决定。
 
 当最后针对整条分支的评审干净、且它的修复已合并时,删除这个计划的工作空间(`rm -rf <workspace>`)——现在 git 历史就是记录了。同级目录属于别的计划;别去动它们。
 
@@ -267,6 +280,7 @@ digraph process {
 | "这个修复很小,跳过复审吧" | 未经评审的修复正是回归缺陷溜进来的方式。每一轮都以一次范围受限的复审结束。 |
 | "评审拖慢了循环" | 没有评审的循环只是未经验证的空转。评审是这个循环的刹车和方向盘。 |
 | "记账本是额外负担" | 账本才是熬过压缩活下来的东西。没有账本的控制器曾把整段已完成的任务序列重新派发了一遍。 |
+| "实现者自己派了评审者——免费多一重保障" | 那是在重复评审同一份 diff;任务评审才是关卡。工作者自行派发评审者是一项需要指出的缺陷,不是严谨。 |
 
 ## 工作流示例
 

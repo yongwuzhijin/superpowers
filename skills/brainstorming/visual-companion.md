@@ -77,10 +77,10 @@ scripts/start-server.sh --project-dir /path/to/project --open --foreground
 
 **Copilot CLI:**
 ```bash
-# 用 --foreground,并通过 bash 工具以 mode: "async" 启动服务,
-# 好让进程在多轮之间存活。把返回的 shellId 记下来,
-# 以便之后需要交互时用于 read_bash / stop_bash。
-scripts/start-server.sh --project-dir /path/to/project --open --foreground
+# 使用 Copilot CLI 的非阻塞/后台 shell 机制启动,让服务在多轮之间存活。
+# 保留 --foreground,由运行环境而不是脚本负责后台运行。启动器是 .sh 文件,
+# 所以要通过 bash 调用(Windows 上则从 PowerShell 工具调用 Git Bash 的 bash.exe)。
+bash scripts/start-server.sh --project-dir /path/to/project --open --foreground
 ```
 
 **其他环境:** 服务必须在多轮对话之间保持在后台运行。如果你的环境会回收脱离终端的进程,就用 `--foreground`,并用你所在平台的后台执行机制来启动这个命令。
