@@ -52,6 +52,10 @@ make_fixture "$happy_repo" $'name: superpowers\nversion: 1.2.3'
 [[ "$(yq -r '.version' "$happy_repo/.hermes-plugin/plugin.yaml")" == "2.3.4" ]] \
   || fail "YAML manifest was not bumped"
 
+jq -e 'any(.files[]; .path == ".codex-plugin/plugin.json" and .field == "version")' \
+  "$REPO_ROOT/.version-bump.json" >/dev/null \
+  || fail "Codex manifest is not registered"
+
 invalid_repo="$TEST_ROOT/invalid"
 make_fixture "$invalid_repo" $'name: superpowers\nversion: 123'
 cp "$invalid_repo/package.json" "$TEST_ROOT/package.before"

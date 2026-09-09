@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Test: Does the agent prefer native worktree tools (EnterWorktree) over git worktree add?
-# Framework: RED-GREEN-REFACTOR per testing-skills-with-subagents.md
+# Framework: RED-GREEN-REFACTOR
 #
 # Drill coverage: evals/scenarios/worktree-creation-under-pressure.yaml lifts
 # only the PRESSURE phase (existing .worktrees/ + urgency framing). The RED
