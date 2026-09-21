@@ -168,8 +168,8 @@ claude_home="$(make_home claude-code)"
 assert_command_output \
     "Claude Code emits nested SessionStart additionalContext" \
     "nested" \
-    "" \
-    "" \
+    "dmon-tdd-engineering" \
+    "危险信号"$'\037'"EXTREMELY-IMPORTANT"$'\037'"阶段路由表"$'\037'"没得选" \
     "$claude_home" \
     CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
     bash "$HOOK_UNDER_TEST"
@@ -188,8 +188,8 @@ cursor_home="$(make_home cursor)"
 assert_command_output \
     "Cursor emits top-level additional_context only" \
     "cursor" \
-    "" \
-    "" \
+    "dmon-tdd-engineering" \
+    "危险信号"$'\037'"EXTREMELY-IMPORTANT"$'\037'"阶段路由表"$'\037'"没得选" \
     "$cursor_home" \
     CURSOR_PLUGIN_ROOT="$REPO_ROOT" \
     CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
@@ -199,8 +199,8 @@ copilot_home="$(make_home copilot-cli)"
 assert_command_output \
     "Copilot CLI emits top-level additionalContext only" \
     "sdk" \
-    "" \
-    "" \
+    "dmon-tdd-engineering" \
+    "危险信号"$'\037'"EXTREMELY-IMPORTANT"$'\037'"阶段路由表"$'\037'"没得选" \
     "$copilot_home" \
     COPILOT_CLI=1 \
     CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
@@ -216,6 +216,27 @@ assert_command_output \
     "$legacy_home" \
     CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
     bash "$HOOK_UNDER_TEST"
+
+# bootstrap 必须短。spec §6.3 限定不超过 20 行。
+bootstrap_home="$(make_home bootstrap-length)"
+bootstrap_output="$(env -i PATH="${PATH:-}" HOME="$bootstrap_home" \
+    CLAUDE_PLUGIN_ROOT="$REPO_ROOT" bash "$HOOK_UNDER_TEST")"
+bootstrap_lines="$(printf '%s' "$bootstrap_output" | node -e '
+const payload = JSON.parse(require("fs").readFileSync(0, "utf8"));
+process.stdout.write(String(payload.hookSpecificOutput.additionalContext.split("\n").length));
+')"
+if [[ "$bootstrap_lines" -le 20 ]]; then
+    pass "bootstrap is $bootstrap_lines lines (<= 20)"
+else
+    fail "bootstrap is $bootstrap_lines lines, expected <= 20"
+fi
+
+# bootstrap 不得再读取任何 SKILL.md 全文。
+if grep -q "SKILL.md" "$HOOK_UNDER_TEST" && grep -q "cat " "$HOOK_UNDER_TEST"; then
+    fail "session-start still reads a SKILL.md file"
+else
+    pass "session-start no longer reads any SKILL.md"
+fi
 
 if [[ "$FAILURES" -gt 0 ]]; then
     echo "STATUS: FAILED ($FAILURES failure(s))"
