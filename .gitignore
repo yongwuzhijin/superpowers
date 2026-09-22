@@ -1,7 +1,7 @@
 .worktrees/
 .private-journal/
 .claude/
-.superpowers/
+.dmon/
 .DS_Store
 node_modules/
 inspo

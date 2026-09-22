@@ -63,7 +63,7 @@ description: "在任何创造性工作之前你都必须先用它——创建功
 3. **提出澄清性问题** —— 一次一个,搞清楚目的、约束和成功标准
 4. **提出 2-3 个方案** —— 附上取舍与推荐方案
 5. **拿出设计** —— 按复杂度分段展示,每段之后取得用户批准
-6. **写设计文档** —— 保存到 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` 并提交
+6. **写设计文档** —— 保存到 `docs/dmon/specs/YYYY-MM-DD-<topic>-design.md` 并提交
 7. **spec 自审** —— 快速就地检查占位符、矛盾、歧义和范围(见下文)
 8. **用户评审书面 spec** —— 继续前请用户评审 spec 文件
 9. **过渡到实现** —— 调用 `../2-planning/writing-plans.md` 技能创建实现计划
@@ -160,7 +160,7 @@ digraph brainstorming {
 
 **文档化:**
 
-- 把校验过的设计(spec)写到 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- 把校验过的设计(spec)写到 `docs/dmon/specs/YYYY-MM-DD-<topic>-design.md`
   - (用户对 spec 存放位置的偏好会覆盖这个默认值)
 - 如果有 elements-of-style:writing-clearly-and-concisely 技能,就用它
 - 把设计文档提交到 git

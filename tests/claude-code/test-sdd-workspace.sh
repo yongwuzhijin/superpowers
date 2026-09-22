@@ -75,10 +75,10 @@ PLAN
     dir_a="$(cd "$repo" && "$SDD_SCRIPTS/sdd-workspace" plan-a.md)"
     dir_b="$(cd "$repo" && "$SDD_SCRIPTS/sdd-workspace" plan-b.md)"
 
-    if [[ "$dir_a" == "$repo/.superpowers/sdd/plan-a" ]]; then
-        pass "prints <repo-root>/.superpowers/sdd/<plan-basename>"
+    if [[ "$dir_a" == "$repo/.dmon/sdd/plan-a" ]]; then
+        pass "prints <repo-root>/.dmon/sdd/<plan-basename>"
     else
-        fail "prints <repo-root>/.superpowers/sdd/<plan-basename>"
+        fail "prints <repo-root>/.dmon/sdd/<plan-basename>"
         echo "    got: $dir_a"
     fi
 
@@ -90,10 +90,10 @@ PLAN
         echo "    b: $dir_b"
     fi
 
-    if [[ -f "$repo/.superpowers/sdd/.gitignore" && "$(cat "$repo/.superpowers/sdd/.gitignore")" == "*" ]]; then
-        pass "self-ignoring .gitignore created at .superpowers/sdd/ with '*'"
+    if [[ -f "$repo/.dmon/sdd/.gitignore" && "$(cat "$repo/.dmon/sdd/.gitignore")" == "*" ]]; then
+        pass "self-ignoring .gitignore created at .dmon/sdd/ with '*'"
     else
-        fail "self-ignoring .gitignore created at .superpowers/sdd/ with '*'"
+        fail "self-ignoring .gitignore created at .dmon/sdd/ with '*'"
     fi
 
     printf 'x\n' > "$dir_a/artifact.md"
@@ -122,7 +122,7 @@ PLAN
     local brief_out brief_path
     brief_out="$(cd "$repo" && "$SDD_SCRIPTS/task-brief" plan-a.md 1)"
     brief_path="$(printf '%s\n' "$brief_out" | sed -n 's/^wrote \(.*\): [0-9][0-9]* lines$/\1/p')"
-    if [[ "$brief_path" == "$repo/.superpowers/sdd/plan-a/task-1-brief.md" ]]; then
+    if [[ "$brief_path" == "$repo/.dmon/sdd/plan-a/task-1-brief.md" ]]; then
         pass "task-brief writes its brief under the plan's workspace"
     else
         fail "task-brief writes its brief under the plan's workspace"
@@ -139,7 +139,7 @@ PLAN
     rp_out="$(cd "$repo" && "$SDD_SCRIPTS/review-package" plan-a.md HEAD~1 HEAD)"
     rp_path="$(printf '%s\n' "$rp_out" | sed -n 's/^wrote \(.*\): [0-9].*$/\1/p')"
     case "$rp_path" in
-        "$repo/.superpowers/sdd/plan-a/review-"*.diff)
+        "$repo/.dmon/sdd/plan-a/review-"*.diff)
             pass "review-package writes its diff under the plan's workspace" ;;
         *)
             fail "review-package writes its diff under the plan's workspace"
@@ -171,7 +171,7 @@ PLAN
     local wt_root wt_dir
     wt_root="$(cd "$wt" && git rev-parse --show-toplevel)"
     wt_dir="$(cd "$wt" && "$SDD_SCRIPTS/sdd-workspace" plan-a.md)"
-    if [[ "$wt_dir" == "$wt_root/.superpowers/sdd/plan-a" && "$wt_dir" != "$dir_a" ]]; then
+    if [[ "$wt_dir" == "$wt_root/.dmon/sdd/plan-a" && "$wt_dir" != "$dir_a" ]]; then
         pass "linked worktree resolves its own distinct workspace"
     else
         fail "linked worktree resolves its own distinct workspace"

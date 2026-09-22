@@ -4,7 +4,7 @@
 
 **目的:** 核实这份 spec 完整、一致,且已具备进入实现规划阶段的条件。
 
-**在什么之后派发:** spec 文档已写入 docs/superpowers/specs/ 之后
+**在什么之后派发:** spec 文档已写入 docs/dmon/specs/ 之后
 
 ```
 Subagent (general-purpose):

@@ -116,8 +116,8 @@ digraph process {
 
 对话记忆熬不过压缩(compaction)。在真实会话里,丢失了自己进度位置的控制器(controller)曾经把整段已经完成的任务序列又重新派发了一遍——这是观测到的代价最高的失败。用一个账本(ledger)文件来追踪进度,而不是只靠 todos。
 
-- 每个计划各自拥有一个工作空间:在技能开始时,运行本技能的 `scripts/sdd-workspace PLAN_FILE`——它会打印出该计划专属的、被 git 忽略的目录(`<repo-root>/.superpowers/sdd/<plan-basename>/`),这里存放着**这个**计划的所有产物:账本、任务简报(brief)、报告、评审包(review package)。别的计划的目录永远轮不到你去读或写。
-- 到 `<workspace>/progress.md` 检查这个计划的账本。如果它的第一行写的是你的计划文件,那么带有 `Task <N>: complete` 这一行的任务就是 DONE 了——别再重新派发它们;从第一个没有这行的任务处续跑。如果一个任务的最后一行是某个修复轮次(fix round),说明它正处于循环中途:从下一轮开始接着跑这个循环。如果一个账本的第一行写的是另一个计划文件——或者在旧的扁平路径 `.superpowers/sdd/progress.md` 处有个游离的账本——那是别的计划的进度:原样留着,自己重新起一个新的。
+- 每个计划各自拥有一个工作空间:在技能开始时,运行本技能的 `scripts/sdd-workspace PLAN_FILE`——它会打印出该计划专属的、被 git 忽略的目录(`<repo-root>/.dmon/sdd/<plan-basename>/`),这里存放着**这个**计划的所有产物:账本、任务简报(brief)、报告、评审包(review package)。别的计划的目录永远轮不到你去读或写。
+- 到 `<workspace>/progress.md` 检查这个计划的账本。如果它的第一行写的是你的计划文件,那么带有 `Task <N>: complete` 这一行的任务就是 DONE 了——别再重新派发它们;从第一个没有这行的任务处续跑。如果一个任务的最后一行是某个修复轮次(fix round),说明它正处于循环中途:从下一轮开始接着跑这个循环。如果一个账本的第一行写的是另一个计划文件——或者在旧的扁平路径 `.dmon/sdd/progress.md` 处有个游离的账本——那是别的计划的进度:原样留着,自己重新起一个新的。
 - 创建账本时,把它的身份写在第一行:`# SDD ledger — plan: <plan file path>`。
 - 账本就是你的恢复地图:它记下的那些提交(commit)确实存在于 git 里,哪怕你的上下文已经不记得创建过它们。压缩之后,相信账本和 `git log`,别信自己的记忆。
 - `git clean -fdx` 会摧毁这个工作空间(它是被 git 忽略的临时草稿区);万一发生了,从 `git log` 恢复。
@@ -288,8 +288,8 @@ digraph process {
 You: I'm using Subagent-Driven Development to execute this plan.
 
 [Setup: worktree verified]
-[Read plan file once: docs/superpowers/plans/feature-plan.md]
-[Resolve workspace: scripts/sdd-workspace docs/superpowers/plans/feature-plan.md — no ledger inside, fresh start]
+[Read plan file once: docs/dmon/plans/feature-plan.md]
+[Resolve workspace: scripts/sdd-workspace docs/dmon/plans/feature-plan.md — no ledger inside, fresh start]
 [Create todos for all tasks]
 
 Task 1: Hook installation script

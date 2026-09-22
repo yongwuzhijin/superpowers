@@ -15,7 +15,7 @@ description: 当你手上已有一份需求规格/spec 或多步骤任务的需�
 
 **上下文:** 如果在隔离的 worktree 中工作,它应该已经在执行时通过 `../shared/using-git-worktrees.md` 技能创建好了。
 
-**计划保存到:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**计划保存到:** `docs/dmon/plans/YYYY-MM-DD-<feature-name>.md`
 - (用户对计划存放位置的偏好可覆盖此默认值)
 
 ## 范围检查
@@ -148,7 +148,7 @@ git commit -m "feat: add specific feature"
 
 保存计划后,给出执行方式的选择:
 
-**"计划已完成并保存到 `docs/superpowers/plans/<filename>.md`。两种执行方式:**
+**"计划已完成并保存到 `docs/dmon/plans/<filename>.md`。两种执行方式:**
 
 **1. 子 Agent 驱动(推荐)** - 我为每个任务派发一个全新的子 Agent,任务之间做评审,快速迭代
 

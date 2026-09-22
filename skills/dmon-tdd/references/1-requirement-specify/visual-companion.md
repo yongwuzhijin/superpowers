@@ -39,17 +39,17 @@ scripts/start-server.sh --project-dir /path/to/project --open
 
 # 返回: {"type":"server-started","port":52341,
 #           "url":"http://localhost:52341/?key=ab12…",
-#           "screen_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/content",
-#           "state_dir":"/path/to/project/.superpowers/brainstorm/12345-1706000000/state"}
+#           "screen_dir":"/path/to/project/.dmon/brainstorm/12345-1706000000/content",
+#           "state_dir":"/path/to/project/.dmon/brainstorm/12345-1706000000/state"}
 ```
 
 把返回结果里的 `screen_dir` 和 `state_dir` 存下来。用了 `--open` 后,当你推送第一个界面时浏览器会自己打开 —— 你不需要请用户去打开它,但仍然把 URL 分享给他们作为兜底(无头/远程环境不会自动打开)。
 
 **URL 里包含一个会话密钥(`?key=…`)。** 服务会拒绝任何不带它的请求,所以务必把 `url` 字段里**完整**的 URL 给用户 —— 绝不要把查询串去掉,也绝不要甩给用户一个光秃秃的 `http://host:port`。这个密钥把守着 HTTP 和 WebSocket 访问,这样一个乱入的浏览器标签页或网络上的另一台机器就没法读取这些界面、也没法注入事件。首次加载之后,浏览器会通过 cookie 记住这个密钥,所以重新加载和 `/files/*` 资源都不用再带它。
 
-**找连接信息:** 服务会把启动时的 JSON 写到 `$STATE_DIR/server-info`。如果你是在后台启动服务、又没捕获 stdout,读这个文件就能拿到 URL 和端口。用 `--project-dir` 时,到 `<project>/.superpowers/brainstorm/` 下找会话目录。
+**找连接信息:** 服务会把启动时的 JSON 写到 `$STATE_DIR/server-info`。如果你是在后台启动服务、又没捕获 stdout,读这个文件就能拿到 URL 和端口。用 `--project-dir` 时,到 `<project>/.dmon/brainstorm/` 下找会话目录。
 
-**注意:** 把项目根目录作为 `--project-dir` 传进去,这样原型图会持久化在 `.superpowers/brainstorm/` 里、能在服务重启后存活。不传的话,文件会进 `/tmp` 并被清理掉。如果 `.superpowers/` 还没加进 `.gitignore`,提醒用户加上。
+**注意:** 把项目根目录作为 `--project-dir` 传进去,这样原型图会持久化在 `.dmon/brainstorm/` 里、能在服务重启后存活。不传的话,文件会进 `/tmp` 并被清理掉。如果 `.dmon/` 还没加进 `.gitignore`,提醒用户加上。
 
 **按平台启动服务:**
 
@@ -284,7 +284,7 @@ scripts/start-server.sh \
 scripts/stop-server.sh $SESSION_DIR
 ```
 
-如果这次会话用了 `--project-dir`,原型图文件会持久化在 `.superpowers/brainstorm/` 里供日后参考。只有 `/tmp` 会话会在停止时被删除。
+如果这次会话用了 `--project-dir`,原型图文件会持久化在 `.dmon/brainstorm/` 里供日后参考。只有 `/tmp` 会话会在停止时被删除。
 
 ## 参考
 
