@@ -1,7 +1,7 @@
 # dmon-tdd-engineering 设计方案
 
 - 日期：2026-09-09
-- 状态：已确认，待编写实施计划
+- 状态：已实施，静态与安装验收通过；三端干净会话实测待补
 - 基线：obra/superpowers v6.3.0 fork（yongwuzhijin/superpowers），skill 正文已汉化
 - 分支：`refactor/dmon-tdd-engineering`
 
@@ -283,3 +283,52 @@ Cursor 的 slash command 是**全局命名空间**（不按插件隔离），因
 2. Codex 是否支持 `commands/` 目录——实施时实测
 3. `tests/explicit-skill-requests/` 的存废
 4. `ddd-*` 的卸载动作由用户自行决定时机，不在本次实施范围内
+
+## 15. 实施后实测记录（2026-09-22）
+
+### §14 遗留项结论
+
+1. `$ARGUMENTS`:实施计划与 commands 统一只用 `$ARGUMENTS`。计划编写前已在 Cursor /
+   Claude Code / Codex 实测：三端均支持；`$1` 在 Claude Code 上返回空串。
+2. Codex 不支持插件随包发布 `commands/`（`scripts/sync-to-codex-plugin.sh` 排除
+   `/commands/`），改由 `scripts/install-codex-prompts.sh` 拷贝到
+   `${CODEX_HOME:-$HOME/.codex}/prompts/`。2026-09-22 本机已跑通安装脚本，
+   7 个 `dmon-*.md` 落盘到 `~/.codex/prompts/`。
+3. `tests/explicit-skill-requests/` 已删除:9 个 prompt fixture 全部点名旧 skill 名,
+   单 skill 改造后前提失效。
+4. `ddd-*` 卸载由用户自行决定时机,不在本次范围。
+
+### 静态与安装验收（已完成）
+
+| 检查项 | 结果 |
+|---|---|
+| `bash tests/structure/run-all.sh` | PASSED（含单 skill、链接、路由、commands、命名残留） |
+| `find skills -name SKILL.md` | 仅 `skills/dmon-tdd/SKILL.md` |
+| `references/` 下无 `SKILL.md` | 通过结构测试断言 |
+| session-start bootstrap | ≤20 行；不含框架正文；不再 `cat` SKILL.md |
+| Claude Code 插件安装 | `dmon-tdd-engineering@superpowers-dev` v1.0.0，status enabled |
+| Codex prompts 安装 | 7/7 文件已安装到 `~/.codex/prompts/` |
+| package 测试 | 仅基线时区 1 项红（UTC+8），与改造无关 |
+
+### 三端干净会话验收结果（待补）
+
+本实施环境无法完成干净会话实测：
+
+- **Claude Code** `claude -p`：API 500（`no handler match`）
+- **Codex** `codex exec`：auth refresh 403（`unsupported_country_region_territory`）
+- **Cursor**：本改造会话已污染，不能当作干净反例/正例会话
+
+请在三端各开**干净会话**后补齐下表（摘录实际回复即可）：
+
+| 端 | 反例（README 无关提问） | 软触发「用 dmon tdd 全托管开发一个待办清单」 | `/dmon-spec 一个待办清单` | skill 列表是否仅 `dmon-tdd` |
+|---|---|---|---|---|
+| Cursor | ⏳ | ⏳ | ⏳ | ⏳ |
+| Claude Code | ⏳ | ⏳ | ⏳（需插件已启用） | ⏳ |
+| Codex | ⏳（无 hook，期望安静） | ⏳（无 hook，可能不触发） | ⏳（需先 `install-codex-prompts.sh`） | ⏳ |
+
+**期望：**
+
+- 反例：直接回答，不加载 dmon-tdd，不提及框架，不询问是否启用
+- 软触发：加载 dmon-tdd，宣布阶段 1，开始需求澄清，**不直接写代码**（Codex 无 sessionStart，此列可为 N/A）
+- 命令：识别 `/dmon-spec`，`$ARGUMENTS`=「一个待办清单」，进入阶段 1
+- skill 列表：本插件只贡献 `dmon-tdd` 一条
