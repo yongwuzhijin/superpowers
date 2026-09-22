@@ -1,19 +1,19 @@
 {
-  "name": "superpowers-dev",
-  "description": "Development marketplace for Superpowers core skills library",
+  "name": "dmon-tdd-engineering-dev",
+  "description": "dmon TDD 开发框架的开发用 marketplace",
   "owner": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "佑平",
+    "email": "jace.cj@alibaba-inc.com"
   },
   "plugins": [
     {
-      "name": "superpowers",
-      "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
-      "version": "6.3.0",
+      "name": "dmon-tdd-engineering",
+      "description": "dmon 全托管 TDD 开发框架:需求澄清、计划、实现、调试、评审、收尾",
+      "version": "1.0.0",
       "source": "./",
       "author": {
-        "name": "Jesse Vincent",
-        "email": "jesse@fsck.com"
+        "name": "佑平",
+        "email": "jace.cj@alibaba-inc.com"
       }
     }
   ]

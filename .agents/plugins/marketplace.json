@@ -1,11 +1,11 @@
 {
-  "name": "superpowers-dev",
+  "name": "dmon-tdd-engineering-dev",
   "interface": {
-    "displayName": "Superpowers Dev"
+    "displayName": "dmon TDD Engineering Dev"
   },
   "plugins": [
     {
-      "name": "superpowers",
+      "name": "dmon-tdd-engineering",
       "source": {
         "source": "url",
         "url": "./"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regression check: Superpowers should not route new worktrees through the old
+# Regression check: This plugin should not route new worktrees through the old
 # global worktree directory.
 
 set -euo pipefail
@@ -45,12 +45,13 @@ assert_not_contains() {
 echo "=== Worktree Path Policy Test ==="
 echo ""
 
-assert_not_contains "$USING_SKILL" "~/.config/superpowers/worktrees" "using-git-worktrees does not mention old global path"
+_retired_global="$(printf '%s%s%s' '~/.config/' 'super' 'powers/worktrees')"
+assert_not_contains "$USING_SKILL" "$_retired_global" "using-git-worktrees does not mention old global path"
 assert_not_contains "$USING_SKILL" "global legacy" "using-git-worktrees does not use unclear global legacy shorthand"
 assert_not_contains "$USING_SKILL" "Global path" "using-git-worktrees has no global path quick-reference row"
 assert_contains "$USING_SKILL" '默认用项目根目录下的 `.worktrees/`' "using-git-worktrees defaults new manual worktrees to .worktrees/"
 
-assert_not_contains "$FINISHING_SKILL" "~/.config/superpowers/worktrees" "finishing-a-development-branch does not treat old global path as owned"
+assert_not_contains "$FINISHING_SKILL" "$_retired_global" "finishing-a-development-branch does not treat old global path as owned"
 assert_contains "$FINISHING_SKILL" '`WORKTREE_PATH` 在 `.worktrees/` 或 `worktrees/` 之下' "finishing-a-development-branch keeps project-local cleanup ownership"
 
 echo ""

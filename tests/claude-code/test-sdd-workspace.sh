@@ -101,7 +101,7 @@ PLAN
     status="$(cd "$repo" && git status --porcelain)"
     # plan-a.md/plan-b.md are intentionally untracked fixture files; only the
     # workspace must be invisible.
-    if [[ "$status" != *".superpowers"* ]]; then
+    if [[ "$status" != *".dmon"* ]]; then
         pass "workspace invisible to git status"
     else
         fail "workspace invisible to git status"
@@ -111,7 +111,7 @@ PLAN
     ( cd "$repo" && git add -A )
     local staged
     staged="$(cd "$repo" && git diff --cached --name-only)"
-    if [[ "$staged" != *".superpowers"* ]]; then
+    if [[ "$staged" != *".dmon"* ]]; then
         pass "git add -A does not stage the workspace"
     else
         fail "git add -A does not stage the workspace"
@@ -182,7 +182,7 @@ PLAN
     printf 'y\n' > "$wt_dir/artifact.md"
     local wt_status
     wt_status="$(cd "$wt" && git status --porcelain)"
-    if [[ "$wt_status" != *".superpowers"* ]]; then
+    if [[ "$wt_status" != *".dmon"* ]]; then
         pass "worktree workspace invisible to git status"
     else
         fail "worktree workspace invisible to git status"

@@ -1,13 +1,13 @@
 {
-  "name": "superpowers",
-  "version": "6.3.0",
-  "description": "Superpowers skills and runtime bootstrap for coding agents",
+  "name": "dmon-tdd-engineering",
+  "version": "1.0.0",
+  "description": "dmon 全托管 TDD 开发框架,供 coding agent 使用",
   "type": "module",
   "keywords": [
-    "skills",
+    "dmon",
     "tdd",
+    "planning",
     "debugging",
-    "collaboration",
     "workflow"
   ]
 }

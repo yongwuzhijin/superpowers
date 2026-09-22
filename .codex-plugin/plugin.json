@@ -1,21 +1,19 @@
 {
-  "name": "superpowers",
-  "version": "6.3.0",
-  "description": "An agentic skills framework & software development methodology that works: planning, TDD, debugging, and collaboration workflows.",
+  "name": "dmon-tdd-engineering",
+  "version": "1.0.0",
+  "description": "dmon 全托管 TDD 开发框架:需求澄清、计划、实现、调试、评审、收尾",
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com",
-    "url": "https://github.com/obra"
+    "name": "佑平",
+    "email": "jace.cj@alibaba-inc.com",
+    "url": "https://github.com/yongwuzhijin"
   },
-  "homepage": "https://github.com/obra/superpowers",
-  "repository": "https://github.com/obra/superpowers",
+  "homepage": "https://github.com/yongwuzhijin/dmon-tdd-engineering",
+  "repository": "https://github.com/yongwuzhijin/dmon-tdd-engineering",
   "license": "MIT",
   "keywords": [
-    "brainstorming",
-    "subagent-driven-development",
-    "skills",
-    "planning",
+    "dmon",
     "tdd",
+    "planning",
     "debugging",
     "code-review",
     "workflow"
@@ -23,10 +21,10 @@
   "skills": "./skills/",
   "hooks": {},
   "interface": {
-    "displayName": "Superpowers",
-    "shortDescription": "Planning, TDD, debugging, and delivery workflows for coding agents",
-    "longDescription": "Use Superpowers to guide agent work through brainstorming, implementation planning, test-driven development, systematic debugging, parallel execution, code review, and finish-the-branch workflows.",
-    "developerName": "Jesse Vincent",
+    "displayName": "dmon TDD Engineering",
+    "shortDescription": "dmon 全托管 TDD：需求澄清、计划、实现、调试、评审、收尾",
+    "longDescription": "用 dmon TDD Engineering 引导 agent 走完需求澄清、实施计划、TDD 实现、系统化调试、代码评审与分支收尾。默认不生效，由 slash command 或关键词显式触发。",
+    "developerName": "佑平",
     "category": "Developer Tools",
     "capabilities": [
       "Interactive",
@@ -34,14 +32,14 @@
       "Write"
     ],
     "defaultPrompt": [
-      "I've got an idea for something I'd like to build.",
-      "Let's add a feature to this project."
+      "用 dmon tdd 全托管开发这个需求",
+      "帮我做需求澄清"
     ],
-    "websiteURL": "https://github.com/obra/superpowers",
+    "websiteURL": "https://github.com/yongwuzhijin/dmon-tdd-engineering",
     "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
     "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
     "brandColor": "#F59E0B",
-    "composerIcon": "./assets/superpowers-small.svg",
+    "composerIcon": "./assets/dmon-tdd-small.svg",
     "logo": "./assets/app-icon.png",
     "screenshots": []
   }

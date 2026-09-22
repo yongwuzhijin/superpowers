@@ -148,7 +148,7 @@ git branch -D <feature-branch>
 
 **如果 `GIT_DIR == GIT_COMMON`:** 普通仓库,没有工作树需要清理。完成。
 
-**如果 `WORKTREE_PATH` 在 `.worktrees/` 或 `worktrees/` 之下:** 这个工作树是 Superpowers 创建的 —— 清理归我们管:
+**如果 `WORKTREE_PATH` 在 `.worktrees/` 或 `worktrees/` 之下:** 这个工作树是 dmon-tdd-engineering 创建的 —— 清理归我们管:
 
 ```bash
 git worktree remove "$WORKTREE_PATH"

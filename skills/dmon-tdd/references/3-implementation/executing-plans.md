@@ -11,7 +11,7 @@ description: 当你已有一份写好的实现计划、需要在独立会话中�
 
 **开始时先声明:** "I'm using the executing-plans skill to implement this plan."
 
-**注意:** 告诉你的人类搭档,Superpowers 在能用子 Agent 时效果好得多(Cursor、Claude Code 和 Codex 都符合条件;各平台的工具参考见 `../platform/codex-tools.md`)。如果子 Agent 可用,请改用 `subagent-driven-development.md`,而不是本技能。
+**注意:** 告诉你的人类搭档,dmon-tdd-engineering 在能用子 Agent 时效果好得多(Cursor、Claude Code 和 Codex 都符合条件;各平台的工具参考见 `../platform/codex-tools.md`)。如果子 Agent 可用,请改用 `subagent-driven-development.md`,而不是本技能。
 
 ## 流程
 
