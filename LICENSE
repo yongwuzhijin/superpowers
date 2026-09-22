@@ -19,3 +19,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+This project is derived from obra/superpowers v6.3.0
+(https://github.com/obra/superpowers), MIT licensed, Copyright (c) Jesse Vincent.
+Skill content has been translated to Chinese and restructured; see
+docs/dmon/specs/2026-09-09-dmon-tdd-engineering-design.md for what changed.

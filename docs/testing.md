@@ -9,6 +9,8 @@ dmon-tdd-engineering has two distinct kinds of tests, each in its own directory:
 
 Live in `tests/`. Currently:
 
+- `tests/structure/` — 本框架的结构断言:单 skill、链接完整性、路由完整性、
+  commands 规范、Codex 安装脚本、命名残留。入口 `bash tests/structure/run-all.sh`。
 - `tests/brainstorm-server/` — node test suite for the brainstorm server JS code.
 - `tests/codex-plugin-sync/` — bash sync verification.
 - `tests/codex/` — Codex marketplace manifest and package-archive checks.

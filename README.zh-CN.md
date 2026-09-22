@@ -1,345 +1,133 @@
-# Superpowers
+[English](README.md)
 
-Superpowers 是一套面向你的编码 Agent 的完整软件开发方法论,它建立在一组可组合的技能之上,再加上一些初始指令,确保你的 Agent 真的会去用这些技能。
+# dmon-tdd-engineering
 
+给 coding agent 用的全托管 TDD 开发框架。覆盖需求澄清、计划、实现、调试、评审、收尾六个阶段。
 
-## 目录
+## 它和别的 skill 框架不一样的地方
 
-- [它是怎么运作的](#它是怎么运作的)
-- [商业服务](#商业服务)
-- [开始使用](#安装)
-  - [Claude Code](#claude-code)
-  - [Antigravity](#antigravity)
-  - [Codex App](#codex-app)
-  - [Codex CLI](#codex-cli)
-  - [Cursor](#cursor)
-  - [Devin CLI](#devin-cli)
-  - [Factory Droid](#factory-droid)
-  - [Gemini CLI](#gemini-cli)
-  - [GitHub Copilot CLI](#github-copilot-cli)
-  - [Grok Build CLI](#grok-build-cli)
-  - [Kimi Code](#kimi-code)
-  - [OpenCode](#opencode)
-  - [Pi](#pi)
-  - [Hermes Agent](#hermes-agent)
-- [基础工作流](#基础工作流)
-- [社区](#社区)
-- [里面都有什么](#里面都有什么)
-- [理念](#理念)
-- [参与贡献](#参与贡献)
-- [更新](#更新)
-- [许可证](#许可证)
-- [可视化伴随功能的遥测](#可视化伴随功能的遥测telemetry)
+**默认不生效。** 会话开始时只注入 11 行说明,告诉模型框架存在以及什么条件下才该加载它。
+不触发就完全不占上下文,也不会插手你的日常提问 —— 不会主动推销,不会问你要不要启用。
 
-## 它是怎么运作的
+**只注册一个 skill。** 六个阶段的内容都在 `skills/dmon-tdd/references/` 下,
+harness 的 skill 列表里只出现 `dmon-tdd` 一条,不污染你的命令面板。
 
-一切从你启动编码 Agent 的那一刻就开始了。一旦它发现你要动手做点东西,它*不会*直接冲上去写代码,而是先退一步,问问你到底想要做什么。
+**触发后纪律全程强制。** 一旦进入流程,阶段文件里的行为约束(危险信号表、
+"你没得选"、"这没有商量余地")在本次流程内全程生效,直到流程结束。
+强制力没有消失,只是作用域从"会话级"收窄到"流程级"。
 
-等它从对话里把一份需求规格/spec 慢慢捋清楚之后,它会把这份 spec 拆成足够短、你能真正读进去消化的小块给你看。
+## 支持的 harness
 
-在你确认了设计之后,你的 Agent 会整理出一份实现计划,清楚到什么程度呢——清楚到一个热情有余、但品味很差、没有判断力、不了解项目背景、还讨厌写测试的初级工程师,都能照着做下去。这份计划强调真正的红/绿测试驱动开发(TDD)、YAGNI(你根本用不上)和 DRY(不要重复自己)。
-
-接下来,一旦你说"开干",它就会启动一个 *subagent-driven-development*(子 Agent 驱动开发)流程,让一个个 Agent 逐个啃下每项工程任务,检查并评审它们的成果,然后继续往前推进。你的 Agent 一次自主工作个把小时、丝毫不偏离你们一起定下的计划,这种情况并不罕见。
-
-它还有很多其他内容,但这就是整个系统的核心。而且因为这些技能是自动触发的,你不需要做任何特别的事情。你的编码 Agent 就这么拥有了 Superpowers。
-
-## 商业服务
-
-如果你在企业环境中使用 Superpowers,并且需要商业支持、额外的工具,或是托管式的开销管理,欢迎随时联系我们:sales@primeradiant.com。
+Cursor、Claude Code、Codex。
 
 ## 安装
 
-安装方式因运行环境(harness)而异。如果你用了不止一个,就为每个分别安装 Superpowers。
+### Cursor
+
+```bash
+git clone https://github.com/yongwuzhijin/dmon-tdd-engineering.git \
+  ~/Documents/github/dmon-tdd-engineering
+```
+
+在 Cursor 里通过本地插件方式加载该目录。插件经 `.cursor-plugin/plugin.json`
+注册 skill、命令与 sessionStart hook,装完即可用。
+
+如果 `/dmon-*` 命令没出现在 `/` 菜单里,检查 Cursor 设置中
+「Include third-party Plugins, Skills, and configs」开关 ——
+插件提供的 command 依赖这个开关,而 skill 不依赖。
 
 ### Claude Code
 
-Superpowers 可通过 [Claude 官方插件市场](https://claude.com/plugins/superpowers)获取。
-
-#### 官方插件市场
-
-- 从 Anthropic 的官方插件市场安装该插件:
-
-  ```bash
-  /plugin install superpowers@claude-plugins-official
-  ```
-
-#### Superpowers 插件市场
-
-Superpowers 插件市场为 Claude Code 提供了 Superpowers 以及一些其他相关插件。
-
-- 注册这个插件市场:
-
-  ```bash
-  /plugin marketplace add obra/superpowers-marketplace
-  ```
-
-- 从这个插件市场安装该插件:
-
-  ```bash
-  /plugin install superpowers@superpowers-marketplace
-  ```
-
-### Antigravity
-
-从本仓库以插件形式安装 Superpowers:
-
 ```bash
-agy plugin install https://github.com/obra/superpowers
+claude plugin marketplace add ~/Documents/github/dmon-tdd-engineering
+claude plugin install dmon-tdd-engineering
 ```
 
-Antigravity 会运行该插件的 session-start 钩子,所以从第一条消息起 Superpowers
-就已经生效了。用同样的命令重新安装即可更新。
+Claude Code 会自动发现根目录的 `commands/` 与 `skills/`,并按
+`hooks/hooks.json` 注册 SessionStart hook。
 
-### Codex App
+### Codex
 
-Superpowers 可通过 [Codex 官方插件市场](https://github.com/openai/plugins)获取。
-
-- 在 Codex app 中,点击侧边栏里的 Plugins。
-- 你应该能在 Coding 分类里看到 `Superpowers`。
-- 点击 Superpowers 旁边的 `+`,然后按提示操作。
-
-### Codex CLI
-
-Superpowers 可通过 [Codex 官方插件市场](https://github.com/openai/plugins)获取。
-
-- 打开插件搜索界面:
-
-  ```bash
-  /plugins
-  ```
-
-- 搜索 Superpowers:
-
-  ```bash
-  superpowers
-  ```
-
-- 选择 `Install Plugin`。
-
-### Cursor
-
-- 在 Cursor Agent 聊天中,从插件市场安装:
-
-  ```text
-  /add-plugin superpowers
-  ```
-
-- 或者在插件市场里搜索 "superpowers"。
-
-### Devin CLI
-
-- 从本仓库安装插件:
-
-  ```bash
-  devin plugins install obra/superpowers
-  ```
-
-- 更新到最新版本:
-
-  ```bash
-  devin plugins update superpowers
-  ```
-
-### Factory Droid
-
-- 注册这个插件市场:
-
-  ```bash
-  droid plugin marketplace add https://github.com/obra/superpowers
-  ```
-
-- 安装该插件:
-
-  ```bash
-  droid plugin install superpowers@superpowers
-  ```
-
-### Gemini CLI
-
-- 安装扩展:
-
-  ```bash
-  gemini extensions install https://github.com/obra/superpowers
-  ```
-
-- 之后更新:
-
-  ```bash
-  gemini extensions update superpowers
-  ```
-
-### GitHub Copilot CLI
-
-- 注册这个插件市场:
-
-  ```bash
-  copilot plugin marketplace add obra/superpowers-marketplace
-  ```
-
-- 安装该插件:
-
-  ```bash
-  copilot plugin install superpowers@superpowers-marketplace
-  ```
-
-### Grok Build CLI
-
-Superpowers 可通过 [Grok 官方插件市场](https://github.com/xai-org/plugin-marketplace)获取。
-
-- 从 xAI 官方市场安装插件:
-
-  ```bash
-  grok plugin install superpowers@xai-official --trust
-  ```
-
-- 或者在 TUI 中打开插件市场,搜索 Superpowers 并安装:
-
-  ```text
-  /marketplace
-  ```
-
-### Kimi Code
-
-Superpowers 可在 Kimi Code 的插件市场中获取。
-
-- 打开 Kimi Code 的插件管理器:
-
-  ```text
-  /plugins
-  ```
-
-- 进入 `Marketplace` > `Superpowers` 并安装它。
-
-- 或者直接从本仓库安装:
-
-  ```text
-  /plugins install https://github.com/obra/superpowers
-  ```
-
-- 详细文档:[docs/README.kimi.md](docs/README.kimi.md)
-
-### OpenCode
-
-OpenCode 使用它自己的插件安装方式;即使你已经在别的运行环境(harness)里用过 Superpowers,
-也要单独为它安装。
-
-- 告诉 OpenCode:
-
-  ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
-  ```
-
-- 详细文档:[docs/README.opencode.md](docs/README.opencode.md)
-
-### Pi
-
-从本仓库以 Pi 包的形式安装 Superpowers:
+Codex 插件只能携带 `skills/`,**无法随包发布 slash command**
+(canonical Codex plugin 一律只带 skills,本仓库的
+`scripts/sync-to-codex-plugin.sh` 也把 `/commands/` 列在不发布目录里)。
+所以装完插件后要多跑一步,把命令拷进用户级提示词目录:
 
 ```bash
-pi install git:github.com/obra/superpowers
+bash scripts/install-codex-prompts.sh
 ```
 
-如果要做本地开发,可以把这个检出(checkout)作为临时包加载来运行 Pi:
+它会把 7 个命令复制到 `${CODEX_HOME:-$HOME/.codex}/prompts/`。
+之后 `/dmon-tdd` 等命令在 Codex 里就能用,`$ARGUMENTS` 也会正常替换。
+
+Codex 没有 hook 机制,所以在 Codex 上只有命令触发,没有 sessionStart 软触发。
+
+## 怎么触发
+
+### 命令(7 个)
+
+| 命令 | 作用 |
+|---|---|
+| `/dmon-tdd` | 全托管:需求澄清 → 计划 → 实现 → 评审 → 收尾 |
+| `/dmon-spec` | 只做阶段 1,需求澄清 |
+| `/dmon-plan` | 只做阶段 2,编写实施计划 |
+| `/dmon-impl` | 只做阶段 3,执行计划 |
+| `/dmon-debug` | 只做阶段 4,系统化调试 |
+| `/dmon-review` | 只做阶段 5,代码评审与完成前验证 |
+| `/dmon-finish` | 只做阶段 6,分支收尾 |
+
+命令后面跟的文字会通过 `$ARGUMENTS` 传给流程,例如
+`/dmon-spec 给结算页加一个批量导出按钮`。
+
+### 关键词(软触发)
+
+在 Cursor 与 Claude Code 上,说出下列任一关键词也会触发:
+
+`dmon tdd`、`dmon 开发`、`全托管开发`、`托管开发`、`tdd 全托管`
+
+## 六个阶段
+
+| 阶段 | 什么时候用 | 命令 | 文件 |
+|---|---|---|---|
+| 1 需求澄清 | 做任何创造性工作之前 | `/dmon-spec` | `references/1-requirement-specify/requirement-specify.md` |
+| 2 计划 | 已有 spec、还没动代码 | `/dmon-plan` | `references/2-planning/writing-plans.md` |
+| 3 实现 | 已有计划要落地 | `/dmon-impl` | `references/3-implementation/{subagent-driven-development,executing-plans}.md` |
+| 4 调试 | 碰到 bug、测试失败、非预期行为 | `/dmon-debug` | `references/4-debugging/systematic-debugging.md` |
+| 5 评审 | 完成任务、合并之前 | `/dmon-review` | `references/5-review/{requesting,receiving}-code-review.md`、`verification-before-completion.md` |
+| 6 收尾 | 实现完成、要决定怎么整合 | `/dmon-finish` | `references/6-finishing/finishing-a-development-branch.md` |
+
+三项横向能力任何阶段都可能被调用:TDD(`references/shared/test-driven-development.md`)、
+隔离工作区(`references/shared/using-git-worktrees.md`)、
+并行派发(`references/shared/dispatching-parallel-agents.md`)。
+
+## 产物落在哪
+
+| 产物 | 路径 | 是否入 git |
+|---|---|---|
+| 需求 spec | `docs/dmon/specs/YYYY-MM-DD-<topic>-design.md` | 是 |
+| 实施计划 | `docs/dmon/plans/YYYY-MM-DD-<feature>.md` | 是 |
+| SDD 执行工作区 | `.dmon/sdd/<plan-basename>/` | 否 |
+| 需求澄清临时文件 | `.dmon/brainstorm/` | 否 |
+
+记得把 `.dmon/` 加进你项目的 `.gitignore`。
+
+## 和 ddd-* 的关系
+
+本框架替代 `ddd-*` 系列 skill。装上之后可以把它们卸掉 ——
+少装 18 个 skill 正是本框架要解决的问题之一。
+
+## 开发与测试
+
+改动本仓库后跑:
 
 ```bash
-pi -e /path/to/superpowers
+bash tests/structure/run-all.sh
 ```
 
-这个 Pi 包会加载 Superpowers 的各项技能,以及一个小扩展——它会在会话启动时、以及每次压缩(compaction)之后,把 `using-superpowers` 引导程序注入进来。Pi 原生支持技能,所以不需要兼容用的 `Skill` 工具。子 Agent 和任务清单相关的工具仍然是可选的 Pi 配套包。
+完整测试说明见 [docs/testing.md](docs/testing.md),贡献约束见 [CLAUDE.md](CLAUDE.md)。
 
-### Hermes Agent
+## 来源
 
-从本仓库把 Superpowers 安装为 Hermes 插件:
-
-```bash
-hermes plugins install obra/superpowers --enable
-```
-
-安装后重启所有正在运行的 Hermes 会话。注意:Hermes 没有上下文压缩后的钩子,因此在非常长的会话中,如果压缩越过了第一轮,引导内容会丢失——若技能不再自动触发,请启动一个新会话。
-
-## 基础工作流
-
-1. **brainstorming** —— 在写代码之前激活。通过提问打磨粗糙的想法,探索各种备选方案,分小节呈现设计供你确认。保存设计文档。
-
-2. **using-git-worktrees** —— 在设计通过之后激活。在新分支上创建隔离的工作空间,运行项目初始化,并验证测试基线是干净的。
-
-3. **writing-plans** —— 在设计通过后激活。把工作拆成一口能吃下的小任务(每个 2-5 分钟)。每个任务都有确切的文件路径、完整的代码和验证步骤。
-
-4. **subagent-driven-development** 或 **executing-plans** —— 有了计划后激活。为每个任务派发一个全新的子 Agent,配以两阶段评审(先看是否符合 spec,再看代码质量),或者分批执行并带上人工检查点。
-
-5. **test-driven-development** —— 在实现过程中激活。强制执行 RED-GREEN-REFACTOR(红-绿-重构):写一个会失败的测试,看着它失败,写出最小可用的代码,看着它通过,然后提交。会删掉在测试之前写下的代码。
-
-6. **requesting-code-review** —— 在任务之间激活。对照计划做评审,按严重程度报告问题。关键问题会阻断后续进展。
-
-7. **finishing-a-development-branch** —— 在任务完成时激活。验证测试,呈现各种选项(合并/PR/保留/丢弃),并清理 worktree。
-
-**Agent 在做任何任务之前,都会检查有没有相关的技能。** 这些是强制性的工作流,不是建议。
-
-## 社区
-
-Superpowers 由 [Jesse Vincent](https://blog.fsck.com) 以及 [Prime Radiant](https://primeradiant.com) 的其他伙伴们打造。
-
-- **Discord**:[加入我们](https://discord.gg/35wsABTejz),获取社区支持、提问,并分享你正在用 Superpowers 做的东西
-- **Issues**:https://github.com/obra/superpowers/issues
-- **发布公告**:[订阅](https://primeradiant.com/superpowers/)以便在有新版本时收到通知
-
-## 里面都有什么
-
-### 技能库
-
-**测试**
-- **test-driven-development** —— RED-GREEN-REFACTOR(红-绿-重构)循环(包含测试反模式参考)
-
-**调试**
-- **systematic-debugging** —— 4 阶段根因分析流程(包含 root-cause-tracing、defense-in-depth、condition-based-waiting 等技巧)
-- **verification-before-completion** —— 确认它是真的修好了
-
-**协作**
-- **brainstorming** —— 苏格拉底式的设计打磨
-- **writing-plans** —— 详尽的实现计划
-- **executing-plans** —— 带检查点的分批执行
-- **dispatching-parallel-agents** —— 并发的子 Agent 工作流
-- **requesting-code-review** —— 评审前检查清单
-- **receiving-code-review** —— 回应反馈
-- **using-git-worktrees** —— 并行的开发分支
-- **finishing-a-development-branch** —— 合并/PR 的决策工作流
-- **subagent-driven-development** —— 配以两阶段评审的快速迭代(先看是否符合 spec,再看代码质量)
-
-**元(Meta)**
-- **writing-skills** —— 按最佳实践创建新技能(包含测试方法论)
-- **using-superpowers** —— 技能系统入门介绍
-
-## 理念
-
-- **测试驱动开发(TDD)** —— 永远先写测试
-- **系统化胜过临时凑合** —— 靠流程,而不是靠猜
-- **降低复杂度** —— 把简单当作首要目标
-- **证据胜过口头声称** —— 在宣布成功之前先做验证
-
-阅读[最初的发布公告](https://blog.fsck.com/2025/10/09/superpowers/)。
-
-## 参与贡献
-
-Superpowers 的一般贡献流程如下。请记住,我们通常不接受新增技能的贡献,而且对技能的任何更新都必须在我们支持的所有编码 Agent 上都能正常工作。
-
-1. Fork 本仓库
-2. 切换到 'dev' 分支
-3. 为你的工作创建一个分支
-4. 遵循 `writing-skills` 技能来创建和测试新技能或修改后的技能
-5. 提交一个 PR,记得填好 pull request 模板。
-
-技能行为测试使用来自 [superpowers-evals](https://github.com/prime-radiant-inc/superpowers-evals/) 的 drill 评估工具,它被克隆到 `evals/` 目录 —— 关于如何配置,参见 `evals/README.md`。插件基础设施的测试位于 `tests/`,通过相应的 `run-*.sh` 或 `npm test` 运行。
-
-完整指南参见 `skills/writing-skills/SKILL.md`。
-
-## 更新
-
-Superpowers 的更新方式在一定程度上取决于所用的编码 Agent,不过通常是自动的。
-
-## 许可证
-
-MIT License —— 详见 LICENSE 文件。
-
-## 可视化伴随功能的遥测(telemetry)
-
-因为技能和插件不会给创作者提供任何反馈,我们完全不知道你们当中有多少人在用 Superpowers。默认情况下,brainstorming 那个可选的可视化伴随功能上的 Prime Radiant logo 是从我们网站加载的。它会带上正在使用的 Superpowers 版本。它不会包含任何关于你的项目、prompt 或编码 Agent 的细节。我们看不到你的点击,也看不到任何关于你在做什么东西的信息。这能帮我们对有多少人在用 Superpowers、以及他们用的是哪个版本,有个大致的了解。它 100% 是可选的。要关闭它,把环境变量 `SUPERPOWERS_DISABLE_TELEMETRY` 设为任意为真的值即可。Superpowers 同样也尊重 Claude Code 的 `DISABLE_TELEMETRY` 和 `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` 这两个退出选项。
+本项目基于一个 MIT 协议的开源 agent 技能框架改造而来,skill 正文经过汉化。
+改造内容:合并为单 skill、改为默认不生效、收窄到三个 harness、并入 dmon 命名体系。
+已与上游分家,不再合并上游更新。原始版权与溯源信息见 [LICENSE](LICENSE)。
