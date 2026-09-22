@@ -16,6 +16,7 @@ cd "$REPO_ROOT"
 excludes=(
     ':!docs/dmon/specs/2026-09-09-dmon-tdd-engineering-design.md'
     ':!docs/dmon/plans/2026-09-09-dmon-tdd-engineering.md'
+    ':!tests/structure/test-no-superpowers.sh'
     # TASK-8: 文档重写完成后删掉下面这四行
     ':!README.md'
     ':!README.zh-CN.md'
@@ -23,7 +24,9 @@ excludes=(
     ':!AGENTS.md'
 )
 
-matches="$(git grep -il "superpowers" -- . "${excludes[@]}" || true)"
+# 搜索串运行时拼接,避免本测试文件被自己的字面量误伤
+needle="$(printf '%s%s' 'super' 'powers')"
+matches="$(git grep -il "$needle" -- . "${excludes[@]}" || true)"
 
 if [[ -z "$matches" ]]; then
     echo "  [PASS] 全仓库无 superpowers 残留"
