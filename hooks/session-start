@@ -22,7 +22,7 @@ read -r -d '' bootstrap_text <<'BOOTSTRAP' || true
 本工作区安装了 dmon-tdd-engineering 开发框架(skill 名:dmon-tdd)。它默认不生效。
 
 仅在下列两种情况下,加载 dmon-tdd 技能并按它的流程走:
-1. 用户输入了 /dmon-tdd、/dmon-spec、/dmon-plan、/dmon-impl、/dmon-debug、/dmon-review、/dmon-finish 中的任一命令
+1. 用户输入了 /dmon-tdd、/dmon-spec、/dmon-sys、/dmon-plan、/dmon-impl、/dmon-debug、/dmon-review、/dmon-finish 中的任一命令
 2. 用户的话里出现「dmon tdd」「dmon 开发」「全托管开发」「托管开发」「tdd 全托管」
 
 除此之外:按你平常的方式工作。不要加载本框架,不要提及它的存在,不要询问用户是否要启用它。

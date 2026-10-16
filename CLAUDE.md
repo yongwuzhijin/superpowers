@@ -41,6 +41,7 @@ dmon-tdd-engineering/
 │   ├── SKILL.md                    # 唯一注册的 skill:分阶段路由表
 │   └── references/
 │       ├── 1-requirement-specify/  # 需求澄清(含可视化伴侣与其脚本)
+│       ├── system-analysis/        # 系分(需求确认后、计划之前)
 │       ├── 2-planning/             # 计划
 │       ├── 3-implementation/       # 实现(SDD / 逐步执行 + 三个提示词 + 三个脚本)
 │       ├── 4-debugging/            # 调试
@@ -48,11 +49,11 @@ dmon-tdd-engineering/
 │       ├── 6-finishing/            # 收尾
 │       ├── shared/                 # TDD、worktree、并行派发
 │       └── platform/               # Codex 工具名映射
-├── commands/                       # 7 个 dmon- 前缀薄壳命令
+├── commands/                       # 8 个 dmon- 前缀薄壳命令
 ├── hooks/                          # session-start(11 行 bootstrap)+ 三端配置
 ├── scripts/                        # 版本、lint、codex 打包 / 同步 / 命令安装
 ├── tests/structure/                # 本次改造新增的结构断言
-└── docs/dmon/{specs,plans}         # 本项目自己的设计与计划文档
+└── docs/dmon/{specs,sys,plans}     # spec、系分、实施计划
 ```
 
 ## 测试

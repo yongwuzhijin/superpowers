@@ -1,6 +1,6 @@
 ---
 name: dmon-tdd
-description: dmon 全托管 TDD 开发框架。当用户输入 /dmon-tdd、/dmon-spec、/dmon-plan、/dmon-impl、/dmon-debug、/dmon-review、/dmon-finish 中任一命令，或说出「dmon tdd」「dmon 开发」「全托管开发」「托管开发」「tdd 全托管」时使用。覆盖需求澄清、计划、实现、调试、评审、收尾六个阶段。
+description: dmon 全托管 TDD 开发框架。当用户输入 /dmon-tdd、/dmon-spec、/dmon-sys、/dmon-plan、/dmon-impl、/dmon-debug、/dmon-review、/dmon-finish 中任一命令，或说出「dmon tdd」「dmon 开发」「全托管开发」「托管开发」「tdd 全托管」时使用。覆盖需求澄清、系分、计划、实现、调试、评审、收尾。
 ---
 
 <SUBAGENT-STOP>
@@ -24,7 +24,8 @@ description: dmon 全托管 TDD 开发框架。当用户输入 /dmon-tdd、/dmon
 | 阶段 | 什么时候进 | 读这些文件 |
 |---|---|---|
 | 1 需求澄清 | 要做任何创造性工作之前——新建功能、搭组件、加能力、改行为 | `references/1-requirement-specify/requirement-specify.md` |
-| 2 计划 | 已有 spec 或需求、还没动代码 | `references/2-planning/writing-plans.md` |
+| 系分 | 需求已确认、还没拆实施计划;要写系统分析、兼容性、发布和排期 | `references/system-analysis/system-analysis.md` |
+| 2 计划 | 已有 spec 或系分、还没动代码 | `references/2-planning/writing-plans.md` |
 | 3 实现 | 已有写好的实施计划要落地 | `references/3-implementation/subagent-driven-development.md`(推荐)或 `references/3-implementation/executing-plans.md` |
 | 4 调试 | 碰到任何 bug、测试失败或非预期行为,在提出修复方案之前 | `references/4-debugging/systematic-debugging.md` |
 | 5 评审 | 完成任务、实现重要特性,或合并之前 | `references/5-review/requesting-code-review.md`、`references/5-review/receiving-code-review.md`、`references/5-review/verification-before-completion.md` |
@@ -40,7 +41,7 @@ description: dmon 全托管 TDD 开发框架。当用户输入 /dmon-tdd、/dmon
 
 ## 全托管流程
 
-用户打 `/dmon-tdd` 或说「全托管开发」时,按 1 → 2 → 3 → 5 → 6 顺序走完;中途遇到 bug 插入阶段 4。**每个阶段结束前必须停下来让你的人类搭档确认,确认过了才能进下一阶段。**
+用户打 `/dmon-tdd` 或说「全托管开发」时,功能交付按 1 → 系分 → 2 → 3 → 5 → 6 走完;纯缺陷修复可跳过系分。中途遇到 bug 插入阶段 4。**每个阶段结束前必须停下来让你的人类搭档确认,确认过了才能进下一阶段。**
 
 ## The Rule(规则)
 
@@ -81,6 +82,7 @@ description: dmon 全托管 TDD 开发框架。当用户输入 /dmon-tdd、/dmon
 ## 产物落盘
 
 - 需求 spec:`docs/dmon/specs/YYYY-MM-DD-<topic>-design.md`(提交进 git)
+- 系分:`docs/dmon/sys/YYYY-MM-DD-<topic>.md`(提交进 git)
 - 实施计划:`docs/dmon/plans/YYYY-MM-DD-<feature>.md`(提交进 git)
 - 执行工作区:`.dmon/sdd/<plan-basename>/`(git 忽略)
 - 需求澄清临时文件:`.dmon/brainstorm/`(git 忽略)

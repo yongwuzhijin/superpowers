@@ -57,19 +57,20 @@ Codex 插件只能携带 `skills/`,**无法随包发布 slash command**
 bash scripts/install-codex-prompts.sh
 ```
 
-它会把 7 个命令复制到 `${CODEX_HOME:-$HOME/.codex}/prompts/`。
+它会把 8 个命令复制到 `${CODEX_HOME:-$HOME/.codex}/prompts/`。
 之后 `/dmon-tdd` 等命令在 Codex 里就能用,`$ARGUMENTS` 也会正常替换。
 
 Codex 没有 hook 机制,所以在 Codex 上只有命令触发,没有 sessionStart 软触发。
 
 ## 怎么触发
 
-### 命令(7 个)
+### 命令(8 个)
 
 | 命令 | 作用 |
 |---|---|
-| `/dmon-tdd` | 全托管:需求澄清 → 计划 → 实现 → 评审 → 收尾 |
+| `/dmon-tdd` | 全托管:需求澄清 → 系分 → 计划 → 实现 → 评审 → 收尾 |
 | `/dmon-spec` | 只做阶段 1,需求澄清 |
+| `/dmon-sys` | 需求确认后写系分:设计、兼容、发布、排期 |
 | `/dmon-plan` | 只做阶段 2,编写实施计划 |
 | `/dmon-impl` | 只做阶段 3,执行计划 |
 | `/dmon-debug` | 只做阶段 4,系统化调试 |
@@ -90,7 +91,8 @@ Codex 没有 hook 机制,所以在 Codex 上只有命令触发,没有 sessionSta
 | 阶段 | 什么时候用 | 命令 | 文件 |
 |---|---|---|---|
 | 1 需求澄清 | 做任何创造性工作之前 | `/dmon-spec` | `references/1-requirement-specify/requirement-specify.md` |
-| 2 计划 | 已有 spec、还没动代码 | `/dmon-plan` | `references/2-planning/writing-plans.md` |
+| 系分 | 需求已确认、还没拆计划 | `/dmon-sys` | `references/system-analysis/system-analysis.md` |
+| 2 计划 | 已有 spec 或系分、还没动代码 | `/dmon-plan` | `references/2-planning/writing-plans.md` |
 | 3 实现 | 已有计划要落地 | `/dmon-impl` | `references/3-implementation/{subagent-driven-development,executing-plans}.md` |
 | 4 调试 | 碰到 bug、测试失败、非预期行为 | `/dmon-debug` | `references/4-debugging/systematic-debugging.md` |
 | 5 评审 | 完成任务、合并之前 | `/dmon-review` | `references/5-review/{requesting,receiving}-code-review.md`、`verification-before-completion.md` |
@@ -105,6 +107,7 @@ Codex 没有 hook 机制,所以在 Codex 上只有命令触发,没有 sessionSta
 | 产物 | 路径 | 是否入 git |
 |---|---|---|
 | 需求 spec | `docs/dmon/specs/YYYY-MM-DD-<topic>-design.md` | 是 |
+| 系分 | `docs/dmon/sys/YYYY-MM-DD-<topic>.md` | 是 |
 | 实施计划 | `docs/dmon/plans/YYYY-MM-DD-<feature>.md` | 是 |
 | SDD 执行工作区 | `.dmon/sdd/<plan-basename>/` | 否 |
 | 需求澄清临时文件 | `.dmon/brainstorm/` | 否 |

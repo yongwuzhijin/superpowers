@@ -13,13 +13,13 @@ fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
 
 echo "Slash command tests"
 
-EXPECTED="dmon-tdd dmon-spec dmon-plan dmon-impl dmon-debug dmon-review dmon-finish"
+EXPECTED="dmon-tdd dmon-spec dmon-sys dmon-plan dmon-impl dmon-debug dmon-review dmon-finish"
 
 actual_count="$(find "$REPO_ROOT/commands" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')"
-if [[ "$actual_count" -eq 7 ]]; then
-    pass "commands/ 下正好 7 个命令文件"
+if [[ "$actual_count" -eq 8 ]]; then
+    pass "commands/ 下正好 8 个命令文件"
 else
-    fail "commands/ 下有 $actual_count 个命令文件,期望 7 个"
+    fail "commands/ 下有 $actual_count 个命令文件,期望 8 个"
 fi
 
 for f in "$REPO_ROOT"/commands/*.md; do

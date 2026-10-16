@@ -46,18 +46,19 @@ Codex plugins can only ship `skills/` — **they cannot publish slash commands w
 bash scripts/install-codex-prompts.sh
 ```
 
-That copies all 7 commands to `${CODEX_HOME:-$HOME/.codex}/prompts/`. Then `/dmon-tdd` and friends work in Codex, with `$ARGUMENTS` substituted normally.
+That copies all 8 commands to `${CODEX_HOME:-$HOME/.codex}/prompts/`. Then `/dmon-tdd` and friends work in Codex, with `$ARGUMENTS` substituted normally.
 
 Codex has no hook mechanism, so on Codex you only get command triggers — no sessionStart soft trigger.
 
 ## How to trigger
 
-### Commands (7)
+### Commands (8)
 
 | Command | Role |
 |---|---|
-| `/dmon-tdd` | Full flow: clarify → plan → implement → review → finish |
+| `/dmon-tdd` | Full flow: clarify → system analysis → plan → implement → review → finish |
 | `/dmon-spec` | Stage 1 only — requirements clarification |
+| `/dmon-sys` | After requirements are confirmed — system analysis, compatibility, release, schedule |
 | `/dmon-plan` | Stage 2 only — write the implementation plan |
 | `/dmon-impl` | Stage 3 only — execute the plan |
 | `/dmon-debug` | Stage 4 only — systematic debugging |
@@ -77,7 +78,8 @@ On Cursor and Claude Code, any of these phrases also triggers:
 | Stage | When | Command | Files |
 |---|---|---|---|
 | 1 Requirements | Before any creative work | `/dmon-spec` | `references/1-requirement-specify/requirement-specify.md` |
-| 2 Planning | Spec exists, code not started | `/dmon-plan` | `references/2-planning/writing-plans.md` |
+| System analysis | Requirements confirmed, plan not started | `/dmon-sys` | `references/system-analysis/system-analysis.md` |
+| 2 Planning | Spec or system analysis exists, code not started | `/dmon-plan` | `references/2-planning/writing-plans.md` |
 | 3 Implementation | Plan ready to land | `/dmon-impl` | `references/3-implementation/{subagent-driven-development,executing-plans}.md` |
 | 4 Debugging | Bugs, test failures, unexpected behavior | `/dmon-debug` | `references/4-debugging/systematic-debugging.md` |
 | 5 Review | Before claiming done / merging | `/dmon-review` | `references/5-review/{requesting,receiving}-code-review.md`, `verification-before-completion.md` |
@@ -90,6 +92,7 @@ Three cross-cutting capabilities may be used in any stage: TDD (`references/shar
 | Artifact | Path | In git? |
 |---|---|---|
 | Design spec | `docs/dmon/specs/YYYY-MM-DD-<topic>-design.md` | yes |
+| System analysis | `docs/dmon/sys/YYYY-MM-DD-<topic>.md` | yes |
 | Implementation plan | `docs/dmon/plans/YYYY-MM-DD-<feature>.md` | yes |
 | SDD workspace | `.dmon/sdd/<plan-basename>/` | no |
 | Requirements temp files | `.dmon/brainstorm/` | no |

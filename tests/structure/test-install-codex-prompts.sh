@@ -18,13 +18,13 @@ echo "Codex prompt install tests"
 output="$(CODEX_HOME="$TEST_HOME/codex" bash "$REPO_ROOT/scripts/install-codex-prompts.sh")"
 
 installed="$(find "$TEST_HOME/codex/prompts" -name 'dmon-*.md' | wc -l | tr -d ' ')"
-if [[ "$installed" -eq 7 ]]; then
-    pass "7 个命令被安装到 CODEX_HOME/prompts"
+if [[ "$installed" -eq 8 ]]; then
+    pass "8 个命令被安装到 CODEX_HOME/prompts"
 else
-    fail "安装了 $installed 个命令,期望 7 个"
+    fail "安装了 $installed 个命令,期望 8 个"
 fi
 
-if [[ "$output" == *"已安装 7 个命令"* ]]; then
+if [[ "$output" == *"已安装 8 个命令"* ]]; then
     pass "脚本报告安装数量"
 else
     fail "脚本输出未报告安装数量: $output"

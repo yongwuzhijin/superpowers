@@ -37,6 +37,7 @@ for (const ref of refs) {
 // 反向:六个阶段主文件都必须被路由表提到
 const required = [
   "references/1-requirement-specify/requirement-specify.md",
+  "references/system-analysis/system-analysis.md",
   "references/2-planning/writing-plans.md",
   "references/3-implementation/subagent-driven-development.md",
   "references/3-implementation/executing-plans.md",
